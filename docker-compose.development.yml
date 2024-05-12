@@ -2,6 +2,7 @@ version: '3'
 
 services:
   frontend:
+    container_name: logbook-docker-frontend
     build:
       dockerfile: Dockerfile.dev
       context: ./frontend
@@ -16,7 +17,7 @@ services:
 
   nginx:
     image: nginx:stable-alpine
-    container_name: realworld-docker-nginx
+    container_name: logbook-docker-nginx
     ports:
       - "8000:8000"
     volumes:
@@ -26,7 +27,21 @@ services:
     networks:
       - realworld-docker-network
 
+  auth_db:
+    container_name: logbook-docker-auth_db  
+    build: auth_db
+    environment:
+      - POSTGRES_USER=${POSTGRES_USER:-postgres}
+      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD:-postgres}
+      - POSTGRES_DB=${POSTGRES_DB:-postgres}
+      - PGDATA = "/var/lib/postgresql/data/pgdata"
+    volumes:
+      - ./auth/sql/schema:/docker-entrypoint-initdb.d/schema
+       - db_data:/var/lib/postgresql/data
 networks:
   realworld-docker-network:
     driver: bridge
 
+volumes:
+    auth_db:
+    db_data:

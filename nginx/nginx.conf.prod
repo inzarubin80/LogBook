@@ -7,4 +7,5 @@ server {
     proxy_pass http://frontend:3000;
   }
 
+
 }

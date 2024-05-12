@@ -24,6 +24,8 @@ services:
       - frontend
     networks:
       - realworld-docker-network
+
+      
 networks:
   realworld-docker-network:
     driver: bridge

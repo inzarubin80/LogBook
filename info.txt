@@ -6,6 +6,10 @@ docker-compose -f docker-compose.development.yml up
 запуск в режиме прод
 docker-compose  up
 
-
 //проблемы 
 прод должен запускаться на 80 порту
+
+//создать таблицы в базе
+migrate -path="/docker-entrypoint-initdb.d/schema - db_data/" -database="postgres://postgres@/postgres?host=/var/run/postgresql/" up
+
+
