@@ -1,0 +1,32 @@
+version: '3'
+
+services:
+  frontend:
+    build:
+      dockerfile: Dockerfile.dev
+      context: ./frontend
+    command: npm run start
+    stdin_open: true
+    tty: true
+    restart: unless-stopped
+    networks:
+      - realworld-docker-network
+    volumes:
+      - ./frontend/src:/usr/src/app/src
+
+  nginx:
+    image: nginx:stable-alpine
+    container_name: realworld-docker-nginx
+    ports:
+      - "8000:8000"
+    volumes:
+      - ./nginx/nginx.conf.dev:/etc/nginx/conf.d/nginx.conf
+    depends_on:
+      - frontend
+    networks:
+      - realworld-docker-network
+
+networks:
+  realworld-docker-network:
+    driver: bridge
+

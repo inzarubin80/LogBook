@@ -1,0 +1,11 @@
+Запуск приложения
+
+запуск в режиме dev
+docker-compose -f docker-compose.development.yml up 
+
+запуск в режиме прод
+docker-compose  up
+
+
+//проблемы 
+прод должен запускаться на 80 порту
