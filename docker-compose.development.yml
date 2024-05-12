@@ -11,9 +11,11 @@ services:
     tty: true
     restart: unless-stopped
     networks:
-      - realworld-docker-network
+      - logbook-docker-network
     volumes:
       - ./frontend/src:/usr/src/app/src
+    depends_on:
+      - auth
 
   nginx:
     image: nginx:stable-alpine
@@ -25,7 +27,7 @@ services:
     depends_on:
       - frontend
     networks:
-      - realworld-docker-network
+      - logbook-docker-network
 
   auth_db:
     container_name: logbook-docker-auth_db  
@@ -35,11 +37,28 @@ services:
       - POSTGRES_PASSWORD=${POSTGRES_PASSWORD:-postgres}
       - POSTGRES_DB=${POSTGRES_DB:-postgres}
       - PGDATA = "/var/lib/postgresql/data/pgdata"
+    networks:
+      - logbook-docker-network  
     volumes:
       - ./auth/sql/schema:/docker-entrypoint-initdb.d/schema
        - db_data:/var/lib/postgresql/data
+
+  auth:
+    container_name: logbook-docker-auth
+    build: 
+      context: auth
+      dockerfile: server.Dockerfile
+      target: dev
+    volumes:
+      - ./auth:/root
+    env_file: .env
+    depends_on:
+      - auth_db
+    networks:
+      - logbook-docker-network
+
 networks:
-  realworld-docker-network:
+  logbook-docker-network:
     driver: bridge
 
 volumes:
