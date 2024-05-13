@@ -6,7 +6,7 @@ services:
     build:
       dockerfile: Dockerfile.dev
       context: ./frontend
-    command: npm run start
+    command: npm run dev
     stdin_open: true
     tty: true
     restart: unless-stopped

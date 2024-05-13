@@ -3,6 +3,9 @@
 запуск в режиме dev
 docker-compose -f docker-compose.development.yml up 
 
+запуск в режиме dev c пересборкой
+docker-compose -f docker-compose.development.yml up --build
+
 запуск в режиме прод
 docker-compose  up
 
