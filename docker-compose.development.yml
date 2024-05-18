@@ -15,7 +15,7 @@ services:
     volumes:
       - ./frontend/src:/usr/src/app/src
     depends_on:
-      - auth
+      - golang
 
   nginx:
     image: nginx:stable-alpine
@@ -29,9 +29,9 @@ services:
     networks:
       - logbook-docker-network
 
-  auth_db:
-    container_name: logbook-docker-auth_db  
-    build: auth_db
+  postgres:
+    container_name: logbook-docker-postgres  
+    build: postgres
     environment:
       - POSTGRES_USER=${POSTGRES_USER:-postgres}
       - POSTGRES_PASSWORD=${POSTGRES_PASSWORD:-postgres}
@@ -40,20 +40,20 @@ services:
     networks:
       - logbook-docker-network  
     volumes:
-      - ./auth/sql/schema:/docker-entrypoint-initdb.d/schema
+      - ./golang/sql/schema:/docker-entrypoint-initdb.d/schema
        - db_data:/var/lib/postgresql/data
 
-  auth:
-    container_name: logbook-docker-auth
+  golang:
+    container_name: logbook-docker-golang
     build: 
-      context: auth
+      context: golang
       dockerfile: server.Dockerfile
       target: dev
     volumes:
-      - ./auth:/root
+      - ./golang:/root
     env_file: .env
     depends_on:
-      - auth_db
+      - postgres
     networks:
       - logbook-docker-network
 
@@ -62,5 +62,5 @@ networks:
     driver: bridge
 
 volumes:
-    auth_db:
+    postgres:
     db_data:

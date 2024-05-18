@@ -11,8 +11,8 @@ server {
     proxy_set_header Connection "upgrade";
   }
 
-  location /auth {
-      proxy_pass http://auth;
+  location /api {
+      proxy_pass http://golang;
       proxy_redirect off;
       proxy_set_header Host $host;
       proxy_set_header X-Real-IP $remote_addr;
