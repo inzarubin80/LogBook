@@ -7,15 +7,22 @@ services:
       dockerfile: Dockerfile.dev
       context: ./frontend
     command: npm run dev
+    develop:
+      watch:
+        - action: sync
+          path: ./frontend/src
+          target: /root/src/
+          ignore:
+            - node_modules/
+        - action: rebuild
+          path: package.json
     stdin_open: true
     tty: true
     restart: unless-stopped
     networks:
       - logbook-docker-network
-    volumes:
-      - ./frontend/src:/usr/src/app/src
-    depends_on:
-      - golang
+    #volumes:
+      #- ./frontend/src:/root/src/
 
   nginx:
     image: nginx:stable-alpine

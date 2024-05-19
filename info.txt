@@ -1,10 +1,10 @@
 Запуск приложения
 
 запуск в режиме dev
-docker-compose -f docker-compose.development.yml up 
+docker-compose -f docker-compose.development.yml up -watch
 
 запуск в режиме dev c пересборкой
-docker-compose -f docker-compose.development.yml up --build
+docker-compose -f docker-compose.development.yml up --build -watch
 
 запуск в режиме прод
 docker-compose  up
