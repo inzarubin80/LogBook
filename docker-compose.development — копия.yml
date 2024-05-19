@@ -10,10 +10,12 @@ services:
     develop:
       watch:
         - action: sync
-          path: ./frontend/src
-          target: /root/src
+          path: ./frontend/
+          target: /root/
           ignore:
             - node_modules/
+        - action: rebuild
+          path: ./frontend/package.json
     stdin_open: true
     tty: true
     restart: unless-stopped
