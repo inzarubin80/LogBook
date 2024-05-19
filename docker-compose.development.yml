@@ -6,16 +6,16 @@ services:
     build:
       dockerfile: Dockerfile.dev
       context: ./frontend
-    command: npm run dev
+    command: npm start
     develop:
       watch:
         - action: sync
-          path: ./frontend/src
-          target: /root/src/
+          path: ./frontend/
+          target: /root/
           ignore:
             - node_modules/
         - action: rebuild
-          path: package.json
+          path: ./frontend/package.json
     stdin_open: true
     tty: true
     restart: unless-stopped
