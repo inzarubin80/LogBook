@@ -19,6 +19,9 @@ import ListItemText from "@mui/material/ListItemText";
 import InboxIcon from "@mui/icons-material/MoveToInbox";
 import MailIcon from "@mui/icons-material/Mail";
 import Сategories from "./Сategories";
+import DraftsIcon from "@mui/icons-material/Drafts";
+import Paper from "@mui/material/Paper";
+import { StaticRouter } from "react-router-dom/server";
 
 import {
   Link as RouterLink,
@@ -27,39 +30,11 @@ import {
   Routes,
   MemoryRouter,
   useLocation,
-  createBrowserRouter,
-  RouterProvider,
 } from "react-router-dom";
 
-import Category  from "./Сategories";
+import Category from "./Сategories";
 
-
-const router = createBrowserRouter([
-  {
-    path: "/",
-    element: <Category />,
-    children: [
-      {
-        path: "dashboard",
-        element: <Category />,
-      },
-      {
-        path: "about",
-        element: <Category />,
-      },
-    ],
-  },
-]);
-
-
-const Link = React.forwardRef<HTMLAnchorElement, RouterLinkProps>(function Link(
-  itemProps,
-  ref
-) {
-  return <RouterLink ref={ref} {...itemProps} role={undefined} />;
-});
-
-const drawerWidth = 150;
+const drawerWidth = 250;
 
 const Main = styled("main", { shouldForwardProp: (prop) => prop !== "open" })<{
   open?: boolean;
@@ -101,6 +76,63 @@ const AppBar = styled(MuiAppBar, {
   }),
 }));
 
+function Router(props: { children?: React.ReactNode }) {
+  const { children } = props;
+  if (typeof window === "undefined") {
+    return <StaticRouter location="/drafts">{children}</StaticRouter>;
+  }
+
+  return (
+    <MemoryRouter initialEntries={["/drafts"]} initialIndex={0}>
+      {children}
+    </MemoryRouter>
+  );
+}
+
+interface ListItemLinkProps {
+  icon?: React.ReactElement;
+  primary: string;
+  to: string;
+}
+
+function ListRouter() {
+  return (
+    <List aria-label="main mailbox folders">
+      <ListItemLink to="/category" primary="Категории" icon={<InboxIcon />} />
+      <ListItemLink to="/drafts" primary="Drafts" icon={<DraftsIcon />} />
+    </List>
+  );
+}
+
+function Content() {
+  const location = useLocation();
+  return (
+    <Typography variant="body2" sx={{ pb: 2 }} color="text.secondary">
+      Current route: {location.pathname}
+    </Typography>
+  );
+}
+
+const Link = React.forwardRef<HTMLAnchorElement, RouterLinkProps>(function Link(
+  itemProps,
+  ref
+) {
+  return <RouterLink ref={ref} {...itemProps} role={undefined} />;
+});
+
+function ListItemLink(props: ListItemLinkProps) {
+  const { icon, primary, to } = props;
+
+  return (
+    <li>
+      <ListItem button component={Link} to={to}>
+        {icon ? <ListItemIcon>{icon}</ListItemIcon> : null}
+        <ListItemText primary={primary} />
+      </ListItem>
+    </li>
+  );
+}
+
 const DrawerHeader = styled("div")(({ theme }) => ({
   display: "flex",
   alignItems: "center",
@@ -141,47 +173,43 @@ export default function App() {
           </Typography>
         </Toolbar>
       </AppBar>
-      <Drawer
-        sx={{
-          width: drawerWidth,
-          flexShrink: 0,
-          "& .MuiDrawer-paper": {
-            width: drawerWidth,
-            boxSizing: "border-box",
-          },
-        }}
-        variant="persistent"
-        anchor="left"
-        open={open}
-      >
-        <DrawerHeader>
-          <IconButton onClick={handleDrawerClose}>
-            {theme.direction === "ltr" ? (
-              <ChevronLeftIcon />
-            ) : (
-              <ChevronRightIcon />
-            )}
-          </IconButton>
-        </DrawerHeader>
-        <Divider />
-        <List>
-          <ListItem
-            key={"Категории"}
-            component={Link}
-            to={"/categories"}
-            disablePadding
-          >
-            <ListItemButton>
-              <ListItemText primary={"Категории"} />
-            </ListItemButton>
-          </ListItem>
-        </List>
-      </Drawer>
-      <Main open={open}>
-        <DrawerHeader />
 
-        <RouterProvider router={router} />
-      </Main>
+      <Router>
+        <Drawer
+          sx={{
+            width: drawerWidth,
+            flexShrink: 0,
+            "& .MuiDrawer-paper": {
+              width: drawerWidth,
+              boxSizing: "border-box",
+            },
+          }}
+          variant="persistent"
+          anchor="left"
+          open={open}
+        >
+          <DrawerHeader>
+            <IconButton onClick={handleDrawerClose}>
+              {theme.direction === "ltr" ? (
+                <ChevronLeftIcon />
+              ) : (
+                <ChevronRightIcon />
+              )}
+            </IconButton>
+          </DrawerHeader>
+          <Divider />
+
+          <ListRouter />
+        </Drawer>
+        <Main open={open}>
+          <DrawerHeader />
+
+          <Routes>
+            <Route path="*" element={<Content />} />
+            <Route path="/category" element={<Category />} />
+          </Routes>
+        </Main>
+      </Router>
     </Box>
   );
 }
