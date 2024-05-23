@@ -18,6 +18,46 @@ import ListItemIcon from "@mui/material/ListItemIcon";
 import ListItemText from "@mui/material/ListItemText";
 import InboxIcon from "@mui/icons-material/MoveToInbox";
 import MailIcon from "@mui/icons-material/Mail";
+import Сategories from "./Сategories";
+
+import {
+  Link as RouterLink,
+  LinkProps as RouterLinkProps,
+  Route,
+  Routes,
+  MemoryRouter,
+  useLocation,
+  createBrowserRouter,
+  RouterProvider,
+} from "react-router-dom";
+
+import Category  from "./Сategories";
+
+
+const router = createBrowserRouter([
+  {
+    path: "/",
+    element: <Category />,
+    children: [
+      {
+        path: "dashboard",
+        element: <Category />,
+      },
+      {
+        path: "about",
+        element: <Category />,
+      },
+    ],
+  },
+]);
+
+
+const Link = React.forwardRef<HTMLAnchorElement, RouterLinkProps>(function Link(
+  itemProps,
+  ref
+) {
+  return <RouterLink ref={ref} {...itemProps} role={undefined} />;
+});
 
 const drawerWidth = 150;
 
@@ -125,20 +165,22 @@ export default function App() {
         </DrawerHeader>
         <Divider />
         <List>
-          {["Школы", "Категории"].map((text, index) => (
-            <ListItem key={text} disablePadding>
-              <ListItemButton>
-                <ListItemText primary={text} />
-              </ListItemButton>
-            </ListItem>
-          ))}
+          <ListItem
+            key={"Категории"}
+            component={Link}
+            to={"/categories"}
+            disablePadding
+          >
+            <ListItemButton>
+              <ListItemText primary={"Категории"} />
+            </ListItemButton>
+          </ListItem>
         </List>
       </Drawer>
       <Main open={open}>
         <DrawerHeader />
-        <Typography paragraph>
-          Таблица категории
-        </Typography>
+
+        <RouterProvider router={router} />
       </Main>
     </Box>
   );
