@@ -1,6 +1,45 @@
 import * as React from 'react';
 import Box from '@mui/material/Box';
-import { DataGrid, GridColDef } from '@mui/x-data-grid';
+import {DeleteButton} from './components/Buttons/DeleteButton'
+import { DataGrid, GridColDef,GridToolbar, 
+  GridToolbarContainer,
+  GridToolbarColumnsButton,
+  GridToolbarFilterButton,
+  GridToolbarExport,
+  GridToolbarDensitySelector,
+
+} from '@mui/x-data-grid';
+
+//https://codesandbox.io/p/sandbox/sleepy-lehmann-vgvlq8?file=%2Fdemo.tsx%3A21%2C20
+
+import { Button } from '@mui/material';
+
+import EditIcon from '@mui/icons-material/Edit';
+
+function CustomToolbar() {
+  return (
+    <GridToolbarContainer>
+      <GridToolbarColumnsButton />
+      <GridToolbarFilterButton />
+      <GridToolbarDensitySelector
+        slotProps={{ tooltip: { title: 'Change density' } }}
+      />
+
+      <Button color="primary" startIcon={<EditIcon />} >
+        Изменить
+      </Button>
+
+   
+      <Box sx={{ flexGrow: 1 }} />
+      <GridToolbarExport
+        slotProps={{
+          tooltip: { title: 'Export data' },
+          button: { variant: 'outlined' },
+        }}
+      />
+    </GridToolbarContainer>
+  );
+}
 
 const columns: GridColDef<(typeof rows)[number]>[] = [
   { field: 'id', headerName: 'ID', width: 90 },
@@ -50,6 +89,10 @@ export default function Сategories() {
     <Box sx={{ height: 400, width: '100%' }}>
       <DataGrid
         rows={rows}
+        slots={{
+          toolbar: CustomToolbar,
+        }}
+
         columns={columns}
         initialState={{
           pagination: {

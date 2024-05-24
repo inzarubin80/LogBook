@@ -203,7 +203,6 @@ export default function App() {
         </Drawer>
         <Main open={open}>
           <DrawerHeader />
-
           <Routes>
             <Route path="*" element={<Content />} />
             <Route path="/category" element={<Category />} />
