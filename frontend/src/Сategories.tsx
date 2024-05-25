@@ -1,109 +1,241 @@
 import * as React from 'react';
 import Box from '@mui/material/Box';
-import {DeleteButton} from './components/Buttons/DeleteButton'
-import { DataGrid, GridColDef,GridToolbar, 
-  GridToolbarContainer,
-  GridToolbarColumnsButton,
-  GridToolbarFilterButton,
-  GridToolbarExport,
-  GridToolbarDensitySelector,
+import Button from '@mui/material/Button';
+import Typography from '@mui/material/Typography';
 
+import AddIcon from '@mui/icons-material/Add';
+import EditIcon from '@mui/icons-material/Edit';
+import DeleteIcon from '@mui/icons-material/DeleteOutlined';
+import SaveIcon from '@mui/icons-material/Save';
+import CancelIcon from '@mui/icons-material/Close';
+import {
+  GridRowsProp,
+  GridRowModesModel,
+  GridRowModes,
+  DataGrid,
+  GridColDef,
+  GridToolbarContainer,
+  GridActionsCellItem,
+  GridEventListener,
+  GridRowId,
+  GridRowModel,
+  GridRowEditStopReasons,
+  GridSlots,
 } from '@mui/x-data-grid';
 
-//https://codesandbox.io/p/sandbox/sleepy-lehmann-vgvlq8?file=%2Fdemo.tsx%3A21%2C20
 
-import { Button } from '@mui/material';
 
-import EditIcon from '@mui/icons-material/Edit';
+const initialRows: GridRowsProp = [
+  {
+    id: 1,
+    name: "Категория 1",
+  },
+  {
+    id: 2,
+    name: "Категория 2",
+  }
 
-function CustomToolbar() {
+];
+
+interface EditToolbarProps {
+  setRows: (newRows: (oldRows: GridRowsProp) => GridRowsProp) => void;
+  setRowModesModel: (
+    newModel: (oldModel: GridRowModesModel) => GridRowModesModel,
+  ) => void;
+}
+
+function EditToolbar(props: EditToolbarProps) {
+  const { setRows, setRowModesModel } = props;
+
+  const handleClick = () => {
+
+    /*
+    const id = randomId();
+    setRows((oldRows) => [...oldRows, { id, name: '', age: '', isNew: true }]);
+    setRowModesModel((oldModel) => ({
+      ...oldModel,
+      [id]: { mode: GridRowModes.Edit, fieldToFocus: 'name' },
+    }));
+
+    */
+
+  };
+
+
+
+  function CustomToolbar() {
+    return (
+      <GridToolbarContainer>
+        <Typography variant="h4" component="h4" color="primary" >
+          Категории
+        </Typography>
+
+      </GridToolbarContainer>
+    );
+  }
+
+
   return (
-    <GridToolbarContainer>
-      <GridToolbarColumnsButton />
-      <GridToolbarFilterButton />
-      <GridToolbarDensitySelector
-        slotProps={{ tooltip: { title: 'Change density' } }}
-      />
+    <>
 
-      <Button color="primary" startIcon={<EditIcon />} >
-        Изменить
-      </Button>
+      <CustomToolbar />
+      <GridToolbarContainer>
+        <Button color="primary" startIcon={<AddIcon />} onClick={handleClick}>
+          Добавить
+        </Button>
+      </GridToolbarContainer>
+    </>
 
-   
-      <Box sx={{ flexGrow: 1 }} />
-      <GridToolbarExport
-        slotProps={{
-          tooltip: { title: 'Export data' },
-          button: { variant: 'outlined' },
-        }}
-      />
-    </GridToolbarContainer>
   );
 }
 
-const columns: GridColDef<(typeof rows)[number]>[] = [
-  { field: 'id', headerName: 'ID', width: 90 },
-  {
-    field: 'firstName',
-    headerName: 'First name',
-    width: 150,
-    editable: true,
-  },
-  {
-    field: 'lastName',
-    headerName: 'Last name',
-    width: 150,
-    editable: true,
-  },
-  {
-    field: 'age',
-    headerName: 'Age',
-    type: 'number',
-    width: 110,
-    editable: true,
-  },
-  {
-    field: 'fullName',
-    headerName: 'Full name',
-    description: 'This column has a value getter and is not sortable.',
-    sortable: false,
-    width: 160,
-    valueGetter: (value, row) => `${row.firstName || ''} ${row.lastName || ''}`,
-  },
-];
-
-const rows = [
-  { id: 1, lastName: 'Snow', firstName: 'Jon', age: 14 },
-  { id: 2, lastName: 'Lannister', firstName: 'Cersei', age: 31 },
-  { id: 3, lastName: 'Lannister', firstName: 'Jaime', age: 31 },
-  { id: 4, lastName: 'Stark', firstName: 'Arya', age: 11 },
-  { id: 5, lastName: 'Targaryen', firstName: 'Daenerys', age: null },
-  { id: 6, lastName: 'Melisandre', firstName: null, age: 150 },
-  { id: 7, lastName: 'Clifford', firstName: 'Ferrara', age: 44 },
-  { id: 8, lastName: 'Frances', firstName: 'Rossini', age: 36 },
-  { id: 9, lastName: 'Roxie', firstName: 'Harvey', age: 65 },
-];
-
 export default function Сategories() {
+  const [rows, setRows] = React.useState(initialRows);
+  const [rowModesModel, setRowModesModel] = React.useState<GridRowModesModel>({});
+
+  const handleRowEditStop: GridEventListener<'rowEditStop'> = (params, event) => {
+    if (params.reason === GridRowEditStopReasons.rowFocusOut) {
+      event.defaultMuiPrevented = true;
+    }
+  };
+
+  const handleEditClick = (id: GridRowId) => () => {
+    // setRowModesModel({ ...rowModesModel, [id]: { mode: GridRowModes.Edit } });
+  };
+
+  const handleSaveClick = (id: GridRowId) => () => {
+    //setRowModesModel({ ...rowModesModel, [id]: { mode: GridRowModes.View } });
+  };
+
+  const handleDeleteClick = (id: GridRowId) => () => {
+    //setRows(rows.filter((row) => row.id !== id));
+  };
+
+  const handleCancelClick = (id: GridRowId) => () => {
+    //setRowModesModel({
+    //  ...rowModesModel,
+    //  [id]: { mode: GridRowModes.View, ignoreModifications: true },
+    //});
+
+    //const editedRow = rows.find((row) => row.id === id);
+    //if (editedRow!.isNew) {
+    //  setRows(rows.filter((row) => row.id !== id));
+    //}
+
+  };
+
+  const processRowUpdate = (newRow: GridRowModel) => {
+    //const updatedRow = { ...newRow, isNew: false };
+    //setRows(rows.map((row) => (row.id === newRow.id ? updatedRow : row)));
+    //return updatedRow;
+  };
+
+  const handleRowModesModelChange = (newRowModesModel: GridRowModesModel) => {
+    //setRowModesModel(newRowModesModel);
+  };
+
+  const columns: GridColDef[] = [
+    {
+      field: 'id',
+      headerName: 'ID',
+      type: 'number',
+      width: 80,
+      align: 'left',
+      headerAlign: 'left',
+      editable: true,
+    },
+
+
+    {
+      field: 'name',
+      headerName: 'Наименование',
+      width: 180,
+      editable: true
+    },
+
+    {
+      field: 'actions',
+      type: 'actions',
+      headerName: 'Действия',
+      width: 100,
+      cellClassName: 'actions',
+      getActions: ({ id }) => {
+
+        /*  const isInEditMode = rowModesModel[id]?.mode === GridRowModes.Edit;
+          if (isInEditMode) {
+            return [
+              <GridActionsCellItem
+                icon={<SaveIcon />}
+                label="Save"
+                sx={{
+                  color: 'primary.main',
+                }}
+                onClick={handleSaveClick(id)}
+              />,
+              <GridActionsCellItem
+                icon={<CancelIcon />}
+                label="Cancel"
+                className="textPrimary"
+                onClick={handleCancelClick(id)}
+                color="inherit"
+              />,
+            ];
+          }
+          */
+
+        return [
+          <GridActionsCellItem
+            icon={<EditIcon />}
+            label="Edit"
+            className="textPrimary"
+            onClick={handleEditClick(id)}
+            color="inherit"
+          />,
+          <GridActionsCellItem
+            icon={<DeleteIcon />}
+            label="Delete"
+            onClick={handleDeleteClick(id)}
+            color="inherit"
+          />,
+        ];
+      },
+    },
+  ];
+
   return (
-    <Box sx={{ height: 400, width: '100%' }}>
+    <Box
+      sx={{
+        height: 500,
+        width: '100%',
+        '& .actions': {
+          color: 'text.secondary',
+        },
+        '& .textPrimary': {
+          color: 'text.primary',
+        },
+      }}
+    >
       <DataGrid
         rows={rows}
-        slots={{
-          toolbar: CustomToolbar,
-        }}
-
         columns={columns}
-        initialState={{
-          pagination: {
-            paginationModel: {
-              pageSize: 5,
-            },
-          },
+        editMode="row"
+        rowModesModel={rowModesModel}
+        onRowModesModelChange={handleRowModesModelChange}
+        onRowEditStop={handleRowEditStop}
+
+        // components={{
+        // Toolbar: CustomToolbar,
+        //}}
+
+        //components={{Toolbar: DataGridTitle}}
+
+        //processRowUpdate={processRowUpdate}
+        slots={{
+          toolbar: EditToolbar as GridSlots['toolbar'],
         }}
-        pageSizeOptions={[5]}
-        checkboxSelection
-        disableRowSelectionOnClick
+        slotProps={{
+          toolbar: { setRows, setRowModesModel },
+        }}
       />
     </Box>
   );
