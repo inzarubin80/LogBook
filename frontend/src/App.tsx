@@ -22,6 +22,7 @@ import Сategories from "./Сategories";
 import DraftsIcon from "@mui/icons-material/Drafts";
 import Paper from "@mui/material/Paper";
 import { StaticRouter } from "react-router-dom/server";
+import { WithUser } from './Shared/UserContainer'
 
 import {
   Link as RouterLink,
@@ -155,6 +156,7 @@ export default function App() {
   };
 
   return (
+    <WithUser>
     <Box sx={{ display: "flex" }}>
       <CssBaseline />
       <AppBar position="fixed" open={open}>
@@ -210,5 +212,6 @@ export default function App() {
         </Main>
       </Router>
     </Box>
+    </WithUser>
   );
 }
