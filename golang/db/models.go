@@ -5,6 +5,7 @@
 package db
 
 import (
+	"database/sql"
 	"database/sql/driver"
 	"fmt"
 	"time"
@@ -51,6 +52,98 @@ func (ns NullUserStatus) Value() (driver.Value, error) {
 		return nil, nil
 	}
 	return ns.UserStatus, nil
+}
+
+type FlCategory struct {
+	ID        int64        `json:"id"`
+	Name      string       `json:"name"`
+	CreatedAt sql.NullTime `json:"created_at"`
+	UpdatedAt sql.NullTime `json:"updated_at"`
+}
+
+type FlCategoryValue struct {
+	ID         int64         `json:"id"`
+	Name       string        `json:"name"`
+	CategoryID sql.NullInt64 `json:"category_id"`
+	CreatedAt  sql.NullTime  `json:"created_at"`
+	UpdatedAt  sql.NullTime  `json:"updated_at"`
+}
+
+type FlCoache struct {
+	ID        int64        `json:"id"`
+	Name      string       `json:"name"`
+	CreatedAt sql.NullTime `json:"created_at"`
+	UpdatedAt sql.NullTime `json:"updated_at"`
+}
+
+type FlScoreScale struct {
+	ID               int64         `json:"id"`
+	Period           time.Time     `json:"period"`
+	PlaceFrom        int32         `json:"place_from"`
+	PlaceTo          int32         `json:"place_to"`
+	NumbersOfPoints  int32         `json:"numbers_of_points"`
+	SportSchoolID    sql.NullInt64 `json:"sport_school_id"`
+	TypeTournamentID sql.NullInt64 `json:"type_tournament_id"`
+	CreatedAt        sql.NullTime  `json:"created_at"`
+	UpdatedAt        sql.NullTime  `json:"updated_at"`
+}
+
+type FlSportSchool struct {
+	ID        int64        `json:"id"`
+	Name      string       `json:"name"`
+	CreatedAt sql.NullTime `json:"created_at"`
+	UpdatedAt sql.NullTime `json:"updated_at"`
+}
+
+type FlSportsman struct {
+	ID        int64        `json:"id"`
+	Name      string       `json:"name"`
+	Gender    string       `json:"gender"`
+	DateBirth sql.NullTime `json:"date_birth"`
+	CreatedAt sql.NullTime `json:"created_at"`
+	UpdatedAt sql.NullTime `json:"updated_at"`
+}
+
+type FlSportsmanInfo struct {
+	ID     int64     `json:"id"`
+	Period time.Time `json:"period"`
+	// Признак, застрахован ли спортсмен
+	Insuranse     bool          `json:"insuranse"`
+	SportSchoolID sql.NullInt64 `json:"sport_school_id"`
+	SportsmanID   sql.NullInt64 `json:"sportsman_id"`
+	CoacheID      sql.NullInt64 `json:"coache_id"`
+	CreatedAt     sql.NullTime  `json:"created_at"`
+	UpdatedAt     sql.NullTime  `json:"updated_at"`
+}
+
+type FlTournament struct {
+	ID                  int64         `json:"id"`
+	Name                string        `json:"name"`
+	BeginDateTournament sql.NullTime  `json:"begin_date_tournament"`
+	EndDateTournament   sql.NullTime  `json:"end_date_tournament"`
+	Venue               string        `json:"venue"`
+	TypeOfTornamentID   sql.NullInt64 `json:"type_of_tornament_id"`
+	CreatedAt           sql.NullTime  `json:"created_at"`
+	UpdatedAt           sql.NullTime  `json:"updated_at"`
+}
+
+type FlTournamentInfo struct {
+	ID              int64         `json:"id"`
+	Period          time.Time     `json:"period"`
+	Points          int32         `json:"points"`
+	Place           int16         `json:"place"`
+	TournamentID    sql.NullInt64 `json:"tournament_id"`
+	SportsmanID     sql.NullInt64 `json:"sportsman_id"`
+	CategoryValueID sql.NullInt64 `json:"category_value_id"`
+	CreatedAt       sql.NullTime  `json:"created_at"`
+	UpdatedAt       sql.NullTime  `json:"updated_at"`
+}
+
+type FlTypeTournament struct {
+	ID        int64        `json:"id"`
+	Name      string       `json:"name"`
+	CreatedAt sql.NullTime `json:"created_at"`
+	UpdatedAt sql.NullTime `json:"updated_at"`
 }
 
 type Reset struct {
