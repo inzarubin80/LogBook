@@ -12,6 +12,7 @@ import (
 	db "github.com/inzarubin80/Logbook/auth/db"
 )
 
+
 // MockQuerier is a mock of Querier interface.
 type MockQuerier struct {
 	ctrl     *gomock.Controller
@@ -33,6 +34,21 @@ func NewMockQuerier(ctrl *gomock.Controller) *MockQuerier {
 // EXPECT returns an object that allows the caller to indicate expected use.
 func (m *MockQuerier) EXPECT() *MockQuerierMockRecorder {
 	return m.recorder
+}
+
+// CreatePost mocks base method.
+func (m *MockQuerier) CreatePost(ctx context.Context, arg db.CreatePostParams) (db.Post, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "CreatePost", ctx, arg)
+	ret0, _ := ret[0].(db.Post)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// CreatePost indicates an expected call of CreatePost.
+func (mr *MockQuerierMockRecorder) CreatePost(ctx, arg interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "CreatePost", reflect.TypeOf((*MockQuerier)(nil).CreatePost), ctx, arg)
 }
 
 // CreateReset mocks base method.
@@ -65,6 +81,20 @@ func (mr *MockQuerierMockRecorder) CreateUser(ctx, arg interface{}) *gomock.Call
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "CreateUser", reflect.TypeOf((*MockQuerier)(nil).CreateUser), ctx, arg)
 }
 
+// DeletePostByIDs mocks base method.
+func (m *MockQuerier) DeletePostByIDs(ctx context.Context, arg db.DeletePostByIDsParams) error {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "DeletePostByIDs", ctx, arg)
+	ret0, _ := ret[0].(error)
+	return ret0
+}
+
+// DeletePostByIDs indicates an expected call of DeletePostByIDs.
+func (mr *MockQuerierMockRecorder) DeletePostByIDs(ctx, arg interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "DeletePostByIDs", reflect.TypeOf((*MockQuerier)(nil).DeletePostByIDs), ctx, arg)
+}
+
 // DeleteResetsForUser mocks base method.
 func (m *MockQuerier) DeleteResetsForUser(ctx context.Context, userID int64) error {
 	m.ctrl.T.Helper()
@@ -77,6 +107,36 @@ func (m *MockQuerier) DeleteResetsForUser(ctx context.Context, userID int64) err
 func (mr *MockQuerierMockRecorder) DeleteResetsForUser(ctx, userID interface{}) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "DeleteResetsForUser", reflect.TypeOf((*MockQuerier)(nil).DeleteResetsForUser), ctx, userID)
+}
+
+// FindPostByIDs mocks base method.
+func (m *MockQuerier) FindPostByIDs(ctx context.Context, arg db.FindPostByIDsParams) (db.Post, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "FindPostByIDs", ctx, arg)
+	ret0, _ := ret[0].(db.Post)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// FindPostByIDs indicates an expected call of FindPostByIDs.
+func (mr *MockQuerierMockRecorder) FindPostByIDs(ctx, arg interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "FindPostByIDs", reflect.TypeOf((*MockQuerier)(nil).FindPostByIDs), ctx, arg)
+}
+
+// FindPostsByAuthor mocks base method.
+func (m *MockQuerier) FindPostsByAuthor(ctx context.Context, authorID int64) ([]db.Post, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "FindPostsByAuthor", ctx, authorID)
+	ret0, _ := ret[0].([]db.Post)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// FindPostsByAuthor indicates an expected call of FindPostsByAuthor.
+func (mr *MockQuerierMockRecorder) FindPostsByAuthor(ctx, authorID interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "FindPostsByAuthor", reflect.TypeOf((*MockQuerier)(nil).FindPostsByAuthor), ctx, authorID)
 }
 
 // FindResetByCode mocks base method.
@@ -137,6 +197,21 @@ func (m *MockQuerier) FindUserByVerificationCode(ctx context.Context, verificati
 func (mr *MockQuerierMockRecorder) FindUserByVerificationCode(ctx, verification interface{}) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "FindUserByVerificationCode", reflect.TypeOf((*MockQuerier)(nil).FindUserByVerificationCode), ctx, verification)
+}
+
+// UpdatePost mocks base method.
+func (m *MockQuerier) UpdatePost(ctx context.Context, arg db.UpdatePostParams) (db.Post, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "UpdatePost", ctx, arg)
+	ret0, _ := ret[0].(db.Post)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// UpdatePost indicates an expected call of UpdatePost.
+func (mr *MockQuerierMockRecorder) UpdatePost(ctx, arg interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "UpdatePost", reflect.TypeOf((*MockQuerier)(nil).UpdatePost), ctx, arg)
 }
 
 // UpdateUserPassword mocks base method.

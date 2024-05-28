@@ -18,15 +18,15 @@ import ListItemText from "@mui/material/ListItemText";
 import InboxIcon from "@mui/icons-material/MoveToInbox";
 import DraftsIcon from "@mui/icons-material/Drafts";
 import { Routes, Route } from "react-router-dom";
-import Сategories  from "./Сategories";
-
+import Сategories from "./Сategories";
+import { Anon, LoggedIn } from "../Shared/Roles";
+import Login from "./login/login";
 
 
 import {
   Link as RouterLink,
   LinkProps as RouterLinkProps,
 } from "react-router-dom";
-
 
 const drawerWidth = 250;
 
@@ -70,9 +70,6 @@ const AppBar = styled(MuiAppBar, {
   }),
 }));
 
-
-
-
 interface ListItemLinkProps {
   icon?: React.ReactElement;
   primary: string;
@@ -82,12 +79,11 @@ interface ListItemLinkProps {
 function ListRouter() {
   return (
     <List aria-label="main mailbox folders">
-        <ListItemLink to="/category" primary="Категории" icon={<InboxIcon />} />
-        <ListItemLink to="/login" primary="Вход" icon={<DraftsIcon />} />
+      <ListItemLink to="/category" primary="Категории" icon={<InboxIcon />} />
+      <ListItemLink to="/login" primary="Вход" icon={<DraftsIcon />} />
     </List>
   );
 }
-
 
 const Link = React.forwardRef<HTMLAnchorElement, RouterLinkProps>(function Link(
   itemProps,
@@ -122,6 +118,9 @@ export default function MyBar() {
   const theme = useTheme();
   const [open, setOpen] = React.useState(false);
 
+ 
+
+
   const handleDrawerOpen = () => {
     setOpen(true);
   };
@@ -131,71 +130,62 @@ export default function MyBar() {
   };
 
   return (
-      <Box sx={{ display: "flex" }}>
-        <CssBaseline />
-        <AppBar position="fixed" open={open}>
-          <Toolbar>
-            <IconButton
-              color="inherit"
-              aria-label="open drawer"
-              onClick={handleDrawerOpen}
-              edge="start"
-              sx={{ mr: 2, ...(open && { display: "none" }) }}
-            >
-              <MenuIcon />
-            </IconButton>
-            <Typography variant="h6" noWrap component="div">
-              Рейтинг спортсменов
-            </Typography>
-          </Toolbar>
-        </AppBar>
-
-          <Drawer
-            sx={{
-              width: drawerWidth,
-              flexShrink: 0,
-              "& .MuiDrawer-paper": {
-                width: drawerWidth,
-                boxSizing: "border-box",
-              },
-            }}
-            variant="persistent"
-            anchor="left"
-            open={open}
+    <Box sx={{ display: "flex" }}>
+      <CssBaseline />
+      <AppBar position="fixed" open={open}>
+        <Toolbar>
+          <IconButton
+            color="inherit"
+            aria-label="open drawer"
+            onClick={handleDrawerOpen}
+            edge="start"
+            sx={{ mr: 2, ...(open && { display: "none" }) }}
           >
-            <DrawerHeader>
-              <IconButton onClick={handleDrawerClose}>
-                {theme.direction === "ltr" ? (
-                  <ChevronLeftIcon />
-                ) : (
-                  <ChevronRightIcon />
-                )}
-              </IconButton>
-            </DrawerHeader>
-            <Divider />
+            <MenuIcon />
+          </IconButton>
+          <Typography variant="h6" noWrap component="div">
+            Рейтинг спортсменов
+          </Typography>
+        </Toolbar>
+      </AppBar>
 
-            <ListRouter />
-          </Drawer>
+      <Drawer
+        sx={{
+          width: drawerWidth,
+          flexShrink: 0,
+          "& .MuiDrawer-paper": {
+            width: drawerWidth,
+            boxSizing: "border-box",
+          },
+        }}
+        variant="persistent"
+        anchor="left"
+        open={open}
+      >
+        <DrawerHeader>
+          <IconButton onClick={handleDrawerClose}>
+            {theme.direction === "ltr" ? (
+              <ChevronLeftIcon />
+            ) : (
+              <ChevronRightIcon />
+            )}
+          </IconButton>
+        </DrawerHeader>
+        <Divider />
 
+        <ListRouter />
+      </Drawer>
 
-          <Main open={open}>
-            <DrawerHeader />
+      <Main open={open}>
+        <DrawerHeader />
+
+        <Routes>
+              <Route path="/" element={<Login />} />
           
-
-            <Routes>
-        <Route path="/" element={<Сategories />} />
-        <Route path="/category" element={<Сategories />} />
-        <Route path="/category" element={<Сategories />} />
-      </Routes>
-
-
-
-          </Main>
-
-
-
-
-
-      </Box>
+          <Route path="/category" element={<Сategories />} />
+          <Route path="/category" element={<Сategories />} />
+        </Routes>
+      </Main>
+    </Box>
   );
 }
