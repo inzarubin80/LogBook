@@ -10,12 +10,13 @@ import (
 
 type Querier interface {
 
-	CreatePost(ctx context.Context, arg CreatePostParams) (Post, error)
-	DeletePostByIDs(ctx context.Context, arg DeletePostByIDsParams) error
-	UpdatePost(ctx context.Context, arg UpdatePostParams) (Post, error)
-	FindPostByIDs(ctx context.Context, arg FindPostByIDsParams) (Post, error)
-	FindPostsByAuthor(ctx context.Context, authorID int64) ([]Post, error)
+	CreateCategory(ctx context.Context, arg CreateCategoryParams) (Category, error)
+	DeleteCategoryByIDs(ctx context.Context, arg DeleteCategoryByIDsParams) error
+	UpdateCategory(ctx context.Context, arg UpdateCategoryParams) (Category, error)
+	FindCategoryByIDs(ctx context.Context, arg FindCategoryByIDsParams) (Category, error)
+	GetCategorys(ctx context.Context) ([]Category, error)
 	
+
 	CreateReset(ctx context.Context, arg CreateResetParams) (Reset, error)
 	CreateUser(ctx context.Context, arg CreateUserParams) (User, error)
 	DeleteResetsForUser(ctx context.Context, userID int64) error

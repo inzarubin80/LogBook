@@ -39,12 +39,12 @@ func (srv *server) ConfigureRouter() {
 	srv.POST("/user/verify", handlers.Verify)
 	srv.PUT("/user/password", handlers.UpdatePassword)
 
-	// POSTS
-	srv.GET("/post", handlers.GetPosts)
-	srv.GET("/post/:id", handlers.GetPost)
-	srv.POST("/post", handlers.CreatePost)
-	srv.PUT("/post", handlers.UpdatePost)
-	srv.DELETE("/post/:id", handlers.DeletePost)
+	// Categorys
+	srv.GET("/post", handlers.GetCategorys)
+	srv.GET("/post/:id", handlers.GetCategory)
+	srv.POST("/post", handlers.CreateCategory)
+	srv.PUT("/post", handlers.UpdateCategory)
+	srv.DELETE("/post/:id", handlers.DeleteCategory)
 	
 
 }
