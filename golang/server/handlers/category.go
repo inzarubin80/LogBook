@@ -22,9 +22,7 @@ func CreateCategory(env env.Env, user *db.User, w http.ResponseWriter, r *http.R
 	}
 
 
-	return write.JSONorErr(env.DB().CreateCategory(r.Context(), db.CreateCategoryParams{
-		Name: p.Name,
-	}))
+	return write.JSONorErr(env.DB().CreateCategory(r.Context(), p.Name))
 }
 
 func GetCategory(env env.Env, user *db.User, w http.ResponseWriter, r *http.Request) http.HandlerFunc {
@@ -37,9 +35,7 @@ func GetCategory(env env.Env, user *db.User, w http.ResponseWriter, r *http.Requ
 		return write.Error(errors.RouteNotFound)
 	}
 
-	category, err := env.DB().FindCategoryByIDs(r.Context(), db.FindCategoryByIDsParams{
-		ID:       id,
-	})
+	category, err := env.DB().FindCategoryByIDs(r.Context(), id)
 	if err != nil {
 		if isNotFound(err) {
 			return write.Error(errors.CategoryNotFound)
@@ -71,10 +67,7 @@ func UpdateCategory(env env.Env, user *db.User, w http.ResponseWriter, r *http.R
 	}
 
 
-	return write.JSONorErr(env.DB().UpdateCategory(r.Context(), db.UpdateCategoryParams{
-		ID:       p.ID,
-		Name: p.Name,
-	}))
+	return write.JSONorErr(env.DB().UpdateCategory(r.Context(), p.Name))
 }
 
 func DeleteCategory(env env.Env, user *db.User, w http.ResponseWriter, r *http.Request) http.HandlerFunc {
@@ -87,7 +80,5 @@ func DeleteCategory(env env.Env, user *db.User, w http.ResponseWriter, r *http.R
 		return write.Error(errors.RouteNotFound)
 	}
 
-	return write.SuccessOrErr(env.DB().DeleteCategoryByIDs(r.Context(), db.DeleteCategoryByIDsParams{
-		ID:       id,
-	}))
+	return write.SuccessOrErr(env.DB().DeleteCategoryByIDs(r.Context(), id))
 }
