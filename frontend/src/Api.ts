@@ -31,21 +31,21 @@ export default class API {
     _put('/user/password', body)
   )
 
-  // POSTS
-  static getPosts = () => (
-    _get('/post')
+  // CATEGORY
+  static getCategory = () => (
+    _get('/category')
   )
-  static getPost = (id: number) => (
-    _get(`/post/${id}`)
+  static getCategoryById = (id: number) => (
+    _get(`/category/${id}`)
   )
-  static createPost = (body: Post) => (
-    _post('/post', body)
+  static createCategory = (body: Post) => (
+    _post('/category', body)
   )
-  static updatePost = (body: Post) => (
-    _put('/post', body)
+  static updateCategory = (body: Post) => (
+    _put('/category', body)
   )
-  static deletePost = (id: number) => (
-    _delete(`/post/${id}`)
+  static deleteCategory = (id: number) => (
+    _delete(`/category/${id}`)
   )
 }
 

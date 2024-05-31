@@ -40,11 +40,11 @@ func (srv *server) ConfigureRouter() {
 	srv.PUT("/user/password", handlers.UpdatePassword)
 
 	// Categorys
-	srv.GET("/post", handlers.GetCategorys)
-	srv.GET("/post/:id", handlers.GetCategory)
-	srv.POST("/post", handlers.CreateCategory)
-	srv.PUT("/post", handlers.UpdateCategory)
-	srv.DELETE("/post/:id", handlers.DeleteCategory)
+	srv.GET("/category", handlers.GetCategorys)
+	srv.GET("/category/:id", handlers.GetCategory)
+	srv.POST("/category", handlers.CreateCategory)
+	srv.PUT("/category", handlers.UpdateCategory)
+	srv.DELETE("/category/:id", handlers.DeleteCategory)
 	
 
 }

@@ -1,16 +1,18 @@
-import * as React from 'react';
+import React, { useState, useEffect } from 'react';
 import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
 import Typography from '@mui/material/Typography';
-
 import AddIcon from '@mui/icons-material/Add';
 import EditIcon from '@mui/icons-material/Edit';
 import DeleteIcon from '@mui/icons-material/DeleteOutlined';
+import SaveIcon from '@mui/icons-material/Save';
+import CancelIcon from '@mui/icons-material/Cancel';
+
 
 import {
   GridRowsProp,
+  GridRowModes,
   GridRowModesModel,
-
   DataGrid,
   GridColDef,
   GridToolbarContainer,
@@ -47,17 +49,12 @@ function EditToolbar(props: EditToolbarProps) {
   const { setRows, setRowModesModel } = props;
 
   const handleClick = () => {
-
-    /*
-    const id = randomId();
+    const id = 0;
     setRows((oldRows) => [...oldRows, { id, name: '', age: '', isNew: true }]);
     setRowModesModel((oldModel) => ({
       ...oldModel,
       [id]: { mode: GridRowModes.Edit, fieldToFocus: 'name' },
     }));
-
-    */
-
   };
 
 
@@ -89,6 +86,33 @@ function EditToolbar(props: EditToolbarProps) {
 }
 
 export default function Сategories() {
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await fetch('api/category', {
+          headers: {
+            'X-Requested-With': 'XMLHttpRequest', // Замените 'Bearer your-token' на ваш токен авторизации
+            // Добавьте другие заголовки, если это необходимо
+          },
+        });
+
+        if (!response.ok) {
+          throw new Error(`Ошибка HTTP: ${response.status}`);
+        }
+
+        const data = await response.json();
+        setRows(data);
+      } catch (error) {
+        console.error('Ошибка при получении данных:', error);
+      }
+    };
+
+    fetchData();
+  }, []);
+
+
+
   const [rows, setRows] = React.useState(initialRows);
   const [rowModesModel, setRowModesModel] = React.useState<GridRowModesModel>({});
 
@@ -99,38 +123,38 @@ export default function Сategories() {
   };
 
   const handleEditClick = (id: GridRowId) => () => {
-    // setRowModesModel({ ...rowModesModel, [id]: { mode: GridRowModes.Edit } });
+     setRowModesModel({ ...rowModesModel, [id]: { mode: GridRowModes.Edit } });
   };
 
   const handleSaveClick = (id: GridRowId) => () => {
-    //setRowModesModel({ ...rowModesModel, [id]: { mode: GridRowModes.View } });
+    setRowModesModel({ ...rowModesModel, [id]: { mode: GridRowModes.View } });
   };
 
   const handleDeleteClick = (id: GridRowId) => () => {
-    //setRows(rows.filter((row) => row.id !== id));
+      setRows(rows.filter((row) => row.id !== id));
   };
 
   const handleCancelClick = (id: GridRowId) => () => {
-    //setRowModesModel({
-    //  ...rowModesModel,
-    //  [id]: { mode: GridRowModes.View, ignoreModifications: true },
-    //});
+    setRowModesModel({
+      ...rowModesModel,
+      [id]: { mode: GridRowModes.View, ignoreModifications: true },
+    });
 
-    //const editedRow = rows.find((row) => row.id === id);
-    //if (editedRow!.isNew) {
-    //  setRows(rows.filter((row) => row.id !== id));
-    //}
+    const editedRow = rows.find((row) => row.id === id);
+    if (editedRow!.isNew) {
+      setRows(rows.filter((row) => row.id !== id));
+    }
 
   };
 
   const processRowUpdate = (newRow: GridRowModel) => {
-    //const updatedRow = { ...newRow, isNew: false };
-    //setRows(rows.map((row) => (row.id === newRow.id ? updatedRow : row)));
-    //return updatedRow;
+    const updatedRow = { ...newRow, isNew: false };
+    setRows(rows.map((row) => (row.id === newRow.id ? updatedRow : row)));
+    return updatedRow;
   };
 
   const handleRowModesModelChange = (newRowModesModel: GridRowModesModel) => {
-    //setRowModesModel(newRowModesModel);
+    setRowModesModel(newRowModesModel);
   };
 
   const columns: GridColDef[] = [
@@ -160,7 +184,7 @@ export default function Сategories() {
       cellClassName: 'actions',
       getActions: ({ id }) => {
 
-        /*  const isInEditMode = rowModesModel[id]?.mode === GridRowModes.Edit;
+          const isInEditMode = rowModesModel[id]?.mode === GridRowModes.Edit;
           if (isInEditMode) {
             return [
               <GridActionsCellItem
@@ -180,7 +204,7 @@ export default function Сategories() {
               />,
             ];
           }
-          */
+        
 
         return [
           <GridActionsCellItem
@@ -222,13 +246,14 @@ export default function Сategories() {
         onRowModesModelChange={handleRowModesModelChange}
         onRowEditStop={handleRowEditStop}
 
-        // components={{
-        // Toolbar: CustomToolbar,
-        //}}
+         //components={{
+         //Toolbar: CustomToolbar,
+       // }}
 
-        //components={{Toolbar: DataGridTitle}}
+       // components={{Toolbar: DataGridTitle}}
 
-        //processRowUpdate={processRowUpdate}
+        processRowUpdate={processRowUpdate}
+ 
         slots={{
           toolbar: EditToolbar as GridSlots['toolbar'],
         }}

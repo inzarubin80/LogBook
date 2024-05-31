@@ -20,7 +20,7 @@ import DraftsIcon from "@mui/icons-material/Drafts";
 import { Routes, Route } from "react-router-dom";
 import Сategories from "./Сategories";
 import { Anon, LoggedIn } from "../Shared/Roles";
-import Login from "./login/login";
+import LogIn from "./login/login";
 import Verify from "./Verify/Verify"
 
 import {
@@ -79,10 +79,13 @@ interface ListItemLinkProps {
 function ListRouter() {
   return (
     <List aria-label="main mailbox folders">
+      
       <LoggedIn>
         <ListItemLink to="/category" primary="Категории" icon={<InboxIcon />} />
       </LoggedIn>
+
       <ListItemLink to="/login" primary="Вход" icon={<DraftsIcon />} />
+    
     </List>
   );
 }
@@ -180,9 +183,9 @@ export default function MyBar() {
 
         <Routes>
           
-          <Route path="/" element={<Login />} />
+          <Route path="/" element={<LogIn />} />
           <Route path="/category" element={<Сategories />} />
-          <Route path="/login" element={<Login />} />
+          <Route path="/login" element={<LogIn />} />
           <Route path="/verify/:code" element={<Verify />}/>
           
         </Routes>
