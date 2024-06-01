@@ -199,18 +199,18 @@ func (mr *MockQuerierMockRecorder) GetCategorys(ctx interface{}) *gomock.Call {
 }
 
 // UpdateCategory mocks base method.
-func (m *MockQuerier) UpdateCategory(ctx context.Context, name string) (db.Category, error) {
+func (m *MockQuerier) UpdateCategory(ctx context.Context, arg db.UpdateCategoryParams) (db.Category, error) {
 	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "UpdateCategory", ctx, name)
+	ret := m.ctrl.Call(m, "UpdateCategory", ctx, arg)
 	ret0, _ := ret[0].(db.Category)
 	ret1, _ := ret[1].(error)
 	return ret0, ret1
 }
 
 // UpdateCategory indicates an expected call of UpdateCategory.
-func (mr *MockQuerierMockRecorder) UpdateCategory(ctx, name interface{}) *gomock.Call {
+func (mr *MockQuerierMockRecorder) UpdateCategory(ctx, arg interface{}) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "UpdateCategory", reflect.TypeOf((*MockQuerier)(nil).UpdateCategory), ctx, name)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "UpdateCategory", reflect.TypeOf((*MockQuerier)(nil).UpdateCategory), ctx, arg)
 }
 
 // UpdateUserPassword mocks base method.

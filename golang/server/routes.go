@@ -46,7 +46,6 @@ func (srv *server) ConfigureRouter() {
 	srv.PUT("/category", handlers.UpdateCategory)
 	srv.DELETE("/category/:id", handlers.DeleteCategory)
 	
-
 }
 
 // srvHandler is the extended handler function that our API routes use

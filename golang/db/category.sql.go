@@ -80,11 +80,16 @@ func (q *Queries) GetCategorys(ctx context.Context) ([]Category, error) {
 }
 
 const updateCategory = `-- name: UpdateCategory :one
-UPDATE category SET name = $1,  updated_at = NOW() WHERE id = $1  RETURNING id, name, created_at, updated_at
+UPDATE category SET name = $1,  updated_at = NOW() WHERE id = $2  RETURNING id, name, created_at, updated_at
 `
 
-func (q *Queries) UpdateCategory(ctx context.Context, name string) (Category, error) {
-	row := q.db.QueryRow(ctx, updateCategory, name)
+type UpdateCategoryParams struct {
+	Name string `json:"name"`
+	ID   int64  `json:"id"`
+}
+
+func (q *Queries) UpdateCategory(ctx context.Context, arg UpdateCategoryParams) (Category, error) {
+	row := q.db.QueryRow(ctx, updateCategory, arg.Name, arg.ID)
 	var i Category
 	err := row.Scan(
 		&i.ID,

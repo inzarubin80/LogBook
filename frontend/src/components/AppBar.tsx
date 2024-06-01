@@ -80,10 +80,9 @@ function ListRouter() {
   return (
     <List aria-label="main mailbox folders">
       
-      <LoggedIn>
+    
         <ListItemLink to="/category" primary="Категории" icon={<InboxIcon />} />
-      </LoggedIn>
-
+      
       <ListItemLink to="/login" primary="Вход" icon={<DraftsIcon />} />
     
     </List>
@@ -183,7 +182,7 @@ export default function MyBar() {
 
         <Routes>
           
-          <Route path="/" element={<LogIn />} />
+          <Route path="/" element={<Сategories />} />
           <Route path="/category" element={<Сategories />} />
           <Route path="/login" element={<LogIn />} />
           <Route path="/verify/:code" element={<Verify />}/>
