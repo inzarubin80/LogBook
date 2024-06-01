@@ -38,15 +38,13 @@ function EditToolbar(props: EditToolbarProps) {
 
 
   const { setRows, setRowModesModel, rows } = props;
+   const disabledAdd = (undefined!==rows.find(value=>value.id===-1))
 
 
-   const disabledAdd = (undefined!==rows.find(value=>value.id===0))
-
-   let a = 1
 
   const handleClick = () => {
 
-    const id = 0;
+    const id = -1;
     setRows((oldRows) => [...oldRows, { id, name: "", age: "", isNew: true }]);
     setRowModesModel((oldModel) => ({
       ...oldModel,
@@ -174,7 +172,7 @@ export default function Сategories() {
     try {
     const response = await fetch("api/category",
         {
-          method: newRow.id === 0 ? "POST": "PUT",
+          method: newRow.id === -1 ? "POST": "PUT",
           headers: {
             "X-Requested-With": "XMLHttpRequest", // Замените 'Bearer your-token' на ваш токен авторизации
           },
