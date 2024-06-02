@@ -50,6 +50,21 @@ func (mr *MockQuerierMockRecorder) CreateCategory(ctx, name interface{}) *gomock
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "CreateCategory", reflect.TypeOf((*MockQuerier)(nil).CreateCategory), ctx, name)
 }
 
+// CreateFl_sport_school mocks base method.
+func (m *MockQuerier) CreateFl_sport_school(ctx context.Context, name string) (db.FlSportSchool, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "CreateFl_sport_school", ctx, name)
+	ret0, _ := ret[0].(db.FlSportSchool)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// CreateFl_sport_school indicates an expected call of CreateFl_sport_school.
+func (mr *MockQuerierMockRecorder) CreateFl_sport_school(ctx, name interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "CreateFl_sport_school", reflect.TypeOf((*MockQuerier)(nil).CreateFl_sport_school), ctx, name)
+}
+
 // CreateReset mocks base method.
 func (m *MockQuerier) CreateReset(ctx context.Context, arg db.CreateResetParams) (db.Reset, error) {
 	m.ctrl.T.Helper()
@@ -94,6 +109,20 @@ func (mr *MockQuerierMockRecorder) DeleteCategoryByIDs(ctx, id interface{}) *gom
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "DeleteCategoryByIDs", reflect.TypeOf((*MockQuerier)(nil).DeleteCategoryByIDs), ctx, id)
 }
 
+// DeleteFl_sport_schoolByIDs mocks base method.
+func (m *MockQuerier) DeleteFl_sport_schoolByIDs(ctx context.Context, id int64) error {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "DeleteFl_sport_schoolByIDs", ctx, id)
+	ret0, _ := ret[0].(error)
+	return ret0
+}
+
+// DeleteFl_sport_schoolByIDs indicates an expected call of DeleteFl_sport_schoolByIDs.
+func (mr *MockQuerierMockRecorder) DeleteFl_sport_schoolByIDs(ctx, id interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "DeleteFl_sport_schoolByIDs", reflect.TypeOf((*MockQuerier)(nil).DeleteFl_sport_schoolByIDs), ctx, id)
+}
+
 // DeleteResetsForUser mocks base method.
 func (m *MockQuerier) DeleteResetsForUser(ctx context.Context, userID int64) error {
 	m.ctrl.T.Helper()
@@ -121,6 +150,21 @@ func (m *MockQuerier) FindCategoryByIDs(ctx context.Context, id int64) (db.Categ
 func (mr *MockQuerierMockRecorder) FindCategoryByIDs(ctx, id interface{}) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "FindCategoryByIDs", reflect.TypeOf((*MockQuerier)(nil).FindCategoryByIDs), ctx, id)
+}
+
+// FindFl_sport_schoolByIDs mocks base method.
+func (m *MockQuerier) FindFl_sport_schoolByIDs(ctx context.Context, id int64) (db.FlSportSchool, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "FindFl_sport_schoolByIDs", ctx, id)
+	ret0, _ := ret[0].(db.FlSportSchool)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// FindFl_sport_schoolByIDs indicates an expected call of FindFl_sport_schoolByIDs.
+func (mr *MockQuerierMockRecorder) FindFl_sport_schoolByIDs(ctx, id interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "FindFl_sport_schoolByIDs", reflect.TypeOf((*MockQuerier)(nil).FindFl_sport_schoolByIDs), ctx, id)
 }
 
 // FindResetByCode mocks base method.
@@ -198,6 +242,21 @@ func (mr *MockQuerierMockRecorder) GetCategorys(ctx interface{}) *gomock.Call {
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetCategorys", reflect.TypeOf((*MockQuerier)(nil).GetCategorys), ctx)
 }
 
+// GetFl_sport_schools mocks base method.
+func (m *MockQuerier) GetFl_sport_schools(ctx context.Context) ([]db.FlSportSchool, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "GetFl_sport_schools", ctx)
+	ret0, _ := ret[0].([]db.FlSportSchool)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// GetFl_sport_schools indicates an expected call of GetFl_sport_schools.
+func (mr *MockQuerierMockRecorder) GetFl_sport_schools(ctx interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetFl_sport_schools", reflect.TypeOf((*MockQuerier)(nil).GetFl_sport_schools), ctx)
+}
+
 // UpdateCategory mocks base method.
 func (m *MockQuerier) UpdateCategory(ctx context.Context, arg db.UpdateCategoryParams) (db.Category, error) {
 	m.ctrl.T.Helper()
@@ -211,6 +270,21 @@ func (m *MockQuerier) UpdateCategory(ctx context.Context, arg db.UpdateCategoryP
 func (mr *MockQuerierMockRecorder) UpdateCategory(ctx, arg interface{}) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "UpdateCategory", reflect.TypeOf((*MockQuerier)(nil).UpdateCategory), ctx, arg)
+}
+
+// UpdateFl_sport_school mocks base method.
+func (m *MockQuerier) UpdateFl_sport_school(ctx context.Context, arg db.UpdateFl_sport_schoolParams) (db.FlSportSchool, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "UpdateFl_sport_school", ctx, arg)
+	ret0, _ := ret[0].(db.FlSportSchool)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// UpdateFl_sport_school indicates an expected call of UpdateFl_sport_school.
+func (mr *MockQuerierMockRecorder) UpdateFl_sport_school(ctx, arg interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "UpdateFl_sport_school", reflect.TypeOf((*MockQuerier)(nil).UpdateFl_sport_school), ctx, arg)
 }
 
 // UpdateUserPassword mocks base method.
