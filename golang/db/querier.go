@@ -10,22 +10,22 @@ import (
 
 type Querier interface {
 	CreateCategory(ctx context.Context, name string) (Category, error)
-	CreateFl_sport_school(ctx context.Context, name string) (FlSportSchool, error)
 	CreateReset(ctx context.Context, arg CreateResetParams) (Reset, error)
+	CreateSportSchool(ctx context.Context, name string) (Sportschool, error)
 	CreateUser(ctx context.Context, arg CreateUserParams) (User, error)
 	DeleteCategoryByIDs(ctx context.Context, id int64) error
-	DeleteFl_sport_schoolByIDs(ctx context.Context, id int64) error
 	DeleteResetsForUser(ctx context.Context, userID int64) error
+	DeleteSportSchoolByIDs(ctx context.Context, id int64) error
 	FindCategoryByIDs(ctx context.Context, id int64) (Category, error)
-	FindFl_sport_schoolByIDs(ctx context.Context, id int64) (FlSportSchool, error)
 	FindResetByCode(ctx context.Context, code string) (Reset, error)
+	FindSportSchoolByIDs(ctx context.Context, id int64) (Sportschool, error)
 	FindUserByEmail(ctx context.Context, lower string) (User, error)
 	FindUserByID(ctx context.Context, id int64) (User, error)
 	FindUserByVerificationCode(ctx context.Context, verification string) (User, error)
 	GetCategorys(ctx context.Context) ([]Category, error)
-	GetFl_sport_schools(ctx context.Context) ([]FlSportSchool, error)
+	GetSportSchools(ctx context.Context) ([]Sportschool, error)
 	UpdateCategory(ctx context.Context, arg UpdateCategoryParams) (Category, error)
-	UpdateFl_sport_school(ctx context.Context, arg UpdateFl_sport_schoolParams) (FlSportSchool, error)
+	UpdateSportSchool(ctx context.Context, arg UpdateSportSchoolParams) (Sportschool, error)
 	UpdateUserPassword(ctx context.Context, arg UpdateUserPasswordParams) error
 	UpdateUserStatus(ctx context.Context, arg UpdateUserStatusParams) error
 }

@@ -46,12 +46,12 @@ func (srv *server) ConfigureRouter() {
 	srv.PUT("/category", handlers.UpdateCategory)
 	srv.DELETE("/category/:id", handlers.DeleteCategory)
 
-	// Fl_sport_school
-	srv.GET("/fl_sport_school", handlers.GetFl_sport_schools)
-	srv.GET("/fl_sport_school/:id", handlers.GetFl_sport_school)
-	srv.POST("/fl_sport_school", handlers.CreateFl_sport_school)
-	srv.PUT("/fl_sport_school", handlers.UpdateFl_sport_school)
-	srv.DELETE("/fl_sport_school/:id", handlers.DeleteFl_sport_school)
+	// SportSchool
+	srv.GET("/sportSchool", handlers.GetSportSchools)
+	srv.GET("/sportSchool/:id", handlers.GetSportSchool)
+	srv.POST("/sportSchool", handlers.CreateSportSchool)
+	srv.PUT("/sportSchool", handlers.UpdateSportSchool)
+	srv.DELETE("/sportSchool/:id", handlers.DeleteSportSchool)
 	
 }
 

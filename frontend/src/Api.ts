@@ -48,22 +48,6 @@ export default class API {
     _delete(`/category/${id}`)
   )
 
-  // fl_sport_school
-  static getFl_sport_school = () => (
-    _get('/fl_sport_school')
-  )
-  static getFl_sport_schoolById = (id: number) => (
-    _get(`/fl_sport_school/${id}`)
-  )
-  static createFl_sport_school = (body: Post) => (
-    _post('/fl_sport_school', body)
-  )
-  static updateFl_sport_school = (body: Post) => (
-    _put('/fl_sport_school', body)
-  )
-  static deleteFl_sport_school = (id: number) => (
-    _delete(`/fl_sport_school/${id}`)
-  )
 }
 
 
