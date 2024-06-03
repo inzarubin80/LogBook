@@ -61,19 +61,19 @@ type Category struct {
 	UpdatedAt time.Time `json:"updated_at"`
 }
 
+type Coache struct {
+	ID        int64     `json:"id"`
+	Name      string    `json:"name"`
+	CreatedAt time.Time `json:"created_at"`
+	UpdatedAt time.Time `json:"updated_at"`
+}
+
 type FlCategoryValue struct {
 	ID         int64         `json:"id"`
 	Name       string        `json:"name"`
 	CategoryID sql.NullInt64 `json:"category_id"`
 	CreatedAt  sql.NullTime  `json:"created_at"`
 	UpdatedAt  sql.NullTime  `json:"updated_at"`
-}
-
-type FlCoache struct {
-	ID        int64        `json:"id"`
-	Name      string       `json:"name"`
-	CreatedAt sql.NullTime `json:"created_at"`
-	UpdatedAt sql.NullTime `json:"updated_at"`
 }
 
 type FlScoreScale struct {
@@ -132,13 +132,6 @@ type FlTournamentInfo struct {
 	UpdatedAt       sql.NullTime  `json:"updated_at"`
 }
 
-type FlTypeTournament struct {
-	ID        int64        `json:"id"`
-	Name      string       `json:"name"`
-	CreatedAt sql.NullTime `json:"created_at"`
-	UpdatedAt sql.NullTime `json:"updated_at"`
-}
-
 type Reset struct {
 	UserID    int64     `json:"user_id"`
 	Code      string    `json:"code"`
@@ -146,6 +139,13 @@ type Reset struct {
 }
 
 type SportSchool struct {
+	ID        int64     `json:"id"`
+	Name      string    `json:"name"`
+	CreatedAt time.Time `json:"created_at"`
+	UpdatedAt time.Time `json:"updated_at"`
+}
+
+type TypeTournament struct {
 	ID        int64     `json:"id"`
 	Name      string    `json:"name"`
 	CreatedAt time.Time `json:"created_at"`

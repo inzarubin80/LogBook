@@ -74,7 +74,7 @@ function EditToolbar(props: EditToolbarProps) {
   );
 }
 
-export default function SportSchool() {
+export default function SportSchools() {
 
   const [rows, setRows] = React.useState(initialRows);
   const [rowModesModel, setRowModesModel] = React.useState<GridRowModesModel>(

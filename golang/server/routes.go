@@ -52,7 +52,21 @@ func (srv *server) ConfigureRouter() {
 	srv.POST("/sportSchool", handlers.CreateSportSchool)
 	srv.PUT("/sportSchool", handlers.UpdateSportSchool)
 	srv.DELETE("/sportSchool/:id", handlers.DeleteSportSchool)
-	
+
+	// Coache
+	srv.GET("/coache", handlers.GetCoache)
+	srv.GET("/coache/:id", handlers.GetCoache)
+	srv.POST("/coache", handlers.CreateCoache)
+	srv.PUT("/coache", handlers.UpdateCoache)
+	srv.DELETE("/coache/:id", handlers.DeleteCoache)
+
+	//TypeTournament
+	srv.GET("/typeTournament", handlers.GetCoache)
+	srv.GET("/typeTournament/:id", handlers.GetCoache)
+	srv.POST("/typeTournament", handlers.CreateCoache)
+	srv.PUT("/typeTournament", handlers.UpdateCoache)
+	srv.DELETE("/typeTournament/:id", handlers.DeleteCoache)
+
 }
 
 // srvHandler is the extended handler function that our API routes use
