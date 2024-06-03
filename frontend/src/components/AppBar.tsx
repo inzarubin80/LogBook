@@ -19,7 +19,7 @@ import InboxIcon from "@mui/icons-material/MoveToInbox";
 import DraftsIcon from "@mui/icons-material/Drafts";
 import { Routes, Route } from "react-router-dom";
 import Сategories from "./Сategories";
-import Fl_sport_school from "./Fl_sport_school";
+import SportSchool from "./SportSchool";
 import { Anon, LoggedIn } from "../Shared/Roles";
 import LogIn from "./login/login";
 import Verify from "./Verify/Verify"
@@ -83,7 +83,7 @@ function ListRouter() {
 
 
       <ListItemLink to="/category" primary="Категории" icon={<InboxIcon />} />
-      <ListItemLink to="/fl_sport_school" primary="Школы" icon={<InboxIcon />} />
+      <ListItemLink to="/sportSchool" primary="Школы" icon={<InboxIcon />} />
 
       <ListItemLink to="/login" primary="Вход" icon={<DraftsIcon />} />
 
@@ -186,7 +186,7 @@ export default function MyBar() {
 
           <Route path="/" element={<Сategories />} />
           <Route path="/category" element={<Сategories />} />
-          <Route path="/fl_sport_school" element={<Fl_sport_school />} />
+          <Route path="/sportSchool" element={<SportSchool />} />
           <Route path="/login" element={<LogIn />} />
           <Route path="/verify/:code" element={<Verify />} />
 

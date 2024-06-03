@@ -66,10 +66,10 @@ func (mr *MockQuerierMockRecorder) CreateReset(ctx, arg interface{}) *gomock.Cal
 }
 
 // CreateSportSchool mocks base method.
-func (m *MockQuerier) CreateSportSchool(ctx context.Context, name string) (db.Sportschool, error) {
+func (m *MockQuerier) CreateSportSchool(ctx context.Context, name string) (db.SportSchool, error) {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "CreateSportSchool", ctx, name)
-	ret0, _ := ret[0].(db.Sportschool)
+	ret0, _ := ret[0].(db.SportSchool)
 	ret1, _ := ret[1].(error)
 	return ret0, ret1
 }
@@ -168,10 +168,10 @@ func (mr *MockQuerierMockRecorder) FindResetByCode(ctx, code interface{}) *gomoc
 }
 
 // FindSportSchoolByIDs mocks base method.
-func (m *MockQuerier) FindSportSchoolByIDs(ctx context.Context, id int64) (db.Sportschool, error) {
+func (m *MockQuerier) FindSportSchoolByIDs(ctx context.Context, id int64) (db.SportSchool, error) {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "FindSportSchoolByIDs", ctx, id)
-	ret0, _ := ret[0].(db.Sportschool)
+	ret0, _ := ret[0].(db.SportSchool)
 	ret1, _ := ret[1].(error)
 	return ret0, ret1
 }
@@ -243,10 +243,10 @@ func (mr *MockQuerierMockRecorder) GetCategorys(ctx interface{}) *gomock.Call {
 }
 
 // GetSportSchools mocks base method.
-func (m *MockQuerier) GetSportSchools(ctx context.Context) ([]db.Sportschool, error) {
+func (m *MockQuerier) GetSportSchools(ctx context.Context) ([]db.SportSchool, error) {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "GetSportSchools", ctx)
-	ret0, _ := ret[0].([]db.Sportschool)
+	ret0, _ := ret[0].([]db.SportSchool)
 	ret1, _ := ret[1].(error)
 	return ret0, ret1
 }
@@ -273,10 +273,10 @@ func (mr *MockQuerierMockRecorder) UpdateCategory(ctx, arg interface{}) *gomock.
 }
 
 // UpdateSportSchool mocks base method.
-func (m *MockQuerier) UpdateSportSchool(ctx context.Context, arg db.UpdateSportSchoolParams) (db.Sportschool, error) {
+func (m *MockQuerier) UpdateSportSchool(ctx context.Context, arg db.UpdateSportSchoolParams) (db.SportSchool, error) {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "UpdateSportSchool", ctx, arg)
-	ret0, _ := ret[0].(db.Sportschool)
+	ret0, _ := ret[0].(db.SportSchool)
 	ret1, _ := ret[1].(error)
 	return ret0, ret1
 }

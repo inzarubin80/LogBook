@@ -1,9 +1,10 @@
 package handlers
 
 import (
-	"log"
 	"encoding/json"
+	"log"
 	"net/http"
+
 	"github.com/inzarubin80/Logbook/auth/db"
 	"github.com/inzarubin80/Logbook/auth/env"
 	"github.com/inzarubin80/Logbook/auth/errors"
@@ -21,7 +22,6 @@ func CreateSportSchool(env env.Env, user *db.User, w http.ResponseWriter, r *htt
 	if err != nil || p == nil {
 		return write.Error(errors.NoJSONBody)
 	}
-
 
 	return write.JSONorErr(env.DB().CreateSportSchool(r.Context(), p.Name))
 }
@@ -47,7 +47,7 @@ func GetSportSchool(env env.Env, user *db.User, w http.ResponseWriter, r *http.R
 	return write.JSON(sportSchool)
 }
 
-func GetSportSchool(env env.Env, user *db.User, w http.ResponseWriter, r *http.Request) http.HandlerFunc {
+func GetSportSchools(env env.Env, user *db.User, w http.ResponseWriter, r *http.Request) http.HandlerFunc {
 	if user.Status != db.UserStatusActive {
 		return write.Error(errors.RouteUnauthorized)
 	}
@@ -69,10 +69,10 @@ func UpdateSportSchool(env env.Env, user *db.User, w http.ResponseWriter, r *htt
 
 	log.Println("p.ID", p.ID)
 	log.Println("p.Name", p.Name)
-	
+
 	return write.JSONorErr(env.DB().UpdateSportSchool(r.Context(), db.UpdateSportSchoolParams{
 		Name: p.Name,
-		ID:       p.ID,
+		ID:   p.ID,
 	}))
 }
 

@@ -74,7 +74,7 @@ function EditToolbar(props: EditToolbarProps) {
   );
 }
 
-export default function Fl_sport_school() {
+export default function SportSchool() {
 
   const [rows, setRows] = React.useState(initialRows);
   const [rowModesModel, setRowModesModel] = React.useState<GridRowModesModel>(
@@ -84,7 +84,7 @@ export default function Fl_sport_school() {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await fetch("api/fl_sport_school", {
+        const response = await fetch("api/sportSchool", {
           headers: {
             "X-Requested-With": "XMLHttpRequest", // Замените 'Bearer your-token' на ваш токен авторизации
           },
@@ -130,7 +130,7 @@ export default function Fl_sport_school() {
 
 
     try {
-      const response = await fetch(`api/fl_sport_school/${id}`,
+      const response = await fetch(`api/sportSchool/${id}`,
         {
           method: 'DELETE',
           headers: {
@@ -170,7 +170,7 @@ export default function Fl_sport_school() {
 
 
     try {
-    const response = await fetch("api/fl_sport_school",
+    const response = await fetch("api/sportSchool",
         {
           method: newRow.id === -1 ? "POST": "PUT",
           headers: {
