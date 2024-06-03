@@ -88,13 +88,6 @@ type FlScoreScale struct {
 	UpdatedAt        sql.NullTime  `json:"updated_at"`
 }
 
-type FlSportSchool struct {
-	ID        int64        `json:"id"`
-	Name      string       `json:"name"`
-	CreatedAt sql.NullTime `json:"created_at"`
-	UpdatedAt sql.NullTime `json:"updated_at"`
-}
-
 type FlSportsman struct {
 	ID        int64        `json:"id"`
 	Name      string       `json:"name"`
@@ -150,6 +143,13 @@ type Reset struct {
 	UserID    int64     `json:"user_id"`
 	Code      string    `json:"code"`
 	CreatedAt time.Time `json:"created_at"`
+}
+
+type SportSchool struct {
+	ID        int64     `json:"id"`
+	Name      string    `json:"name"`
+	CreatedAt time.Time `json:"created_at"`
+	UpdatedAt time.Time `json:"updated_at"`
 }
 
 type User struct {

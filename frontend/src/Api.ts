@@ -47,7 +47,9 @@ export default class API {
   static deleteCategory = (id: number) => (
     _delete(`/category/${id}`)
   )
+
 }
+
 
 // internal utils
 const _get = (url: string) => {
