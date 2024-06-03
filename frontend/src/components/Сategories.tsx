@@ -168,7 +168,6 @@ export default function Сategories() {
 
   const processRowUpdate = async (newRow: GridRowModel) => {
 
-
     try {
     const response = await fetch("api/category",
         {
@@ -180,14 +179,11 @@ export default function Сategories() {
         }
       );
 
-
       if (!response.ok) {
         throw new Error(`Ошибка HTTP: ${response.status}`);
       } else {
    
-
         const updatedRow = await response.json();
-       // const updatedRow = { ...newRow, isNew: false };
         setRows(rows.map((row) => (row.id === newRow.id ? updatedRow : row)));
         return updatedRow;
 
@@ -196,10 +192,6 @@ export default function Сategories() {
       console.error("Ошибка при получении данных:", error);
     }
 
-    
-  
-  
-  
   };
 
   const handleRowModesModelChange = (newRowModesModel: GridRowModesModel) => {

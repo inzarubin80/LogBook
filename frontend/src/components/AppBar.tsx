@@ -80,11 +80,9 @@ interface ListItemLinkProps {
 function ListRouter() {
   return (
     <List aria-label="main mailbox folders">
-
-
+      
       <ListItemLink to="/category" primary="Категории" icon={<InboxIcon />} />
       <ListItemLink to="/sportSchool" primary="Школы" icon={<InboxIcon />} />
-
       <ListItemLink to="/login" primary="Вход" icon={<DraftsIcon />} />
 
     </List>

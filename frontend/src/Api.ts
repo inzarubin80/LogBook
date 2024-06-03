@@ -70,7 +70,6 @@ const _put = (url: string, body: object) => {
 
 const _fetch = (method: string, url: string, body?: object) => {
 
-  console.log(url)
 
   return fetch(`/api${url}`, {
     method: method,
