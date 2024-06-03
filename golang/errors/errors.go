@@ -17,10 +17,12 @@ var (
 	VerificationNotFound = errors.New("Invalid Verification Code")
 	VerificationExpired  = errors.New("Verification Code Was Already Used")
 
-	UserNotFound  = errors.New("User does not exist")
-	CategoryNotFound  = errors.New("Post does not exist")
-	SportSchoolNotFound  = errors.New("Post does not exist")
-	ResetNotFound = errors.New("Invalid password reset code")
+	UserNotFound           = errors.New("User does not exist")
+	CategoryNotFound       = errors.New("Post does not exist")
+	CoacheNotFound         = errors.New("Post does not exist")
+	SportSchoolNotFound    = errors.New("Post does not exist")
+	TypeTournamentNotFound = errors.New("Post does not exist")
+	ResetNotFound          = errors.New("Invalid password reset code")
 
 	BadCSRF           = errors.New("Missing CSRF Header")
 	BadOrigin         = errors.New("Invalid Origin Header")
@@ -40,13 +42,15 @@ func codeMap() map[error]int {
 		InvalidEmail:      http.StatusBadRequest,
 		AlreadyRegistered: http.StatusBadRequest,
 
-		FailedLogin:          http.StatusUnauthorized,
-		VerificationNotFound: http.StatusNotFound,
-		VerificationExpired:  http.StatusGone,
-		UserNotFound:         http.StatusNotFound,
-		CategoryNotFound:         http.StatusNotFound,
-		SportSchoolNotFound: http.StatusNotFound,
-		ResetNotFound:        http.StatusNotFound,
+		FailedLogin:            http.StatusUnauthorized,
+		VerificationNotFound:   http.StatusNotFound,
+		VerificationExpired:    http.StatusGone,
+		UserNotFound:           http.StatusNotFound,
+		CategoryNotFound:       http.StatusNotFound,
+		SportSchoolNotFound:    http.StatusNotFound,
+		TypeTournamentNotFound: http.StatusNotFound,
+		CoacheNotFound:         http.StatusNotFound,
+		ResetNotFound:          http.StatusNotFound,
 
 		BadCSRF:           http.StatusUnauthorized,
 		BadOrigin:         http.StatusUnauthorized,
