@@ -54,18 +54,18 @@ func (srv *server) ConfigureRouter() {
 	srv.DELETE("/sportSchool/:id", handlers.DeleteSportSchool)
 
 	// Coache
-	srv.GET("/coache", handlers.GetCoache)
+	srv.GET("/coache", handlers.GetCoaches)
 	srv.GET("/coache/:id", handlers.GetCoache)
 	srv.POST("/coache", handlers.CreateCoache)
 	srv.PUT("/coache", handlers.UpdateCoache)
 	srv.DELETE("/coache/:id", handlers.DeleteCoache)
 
 	//TypeTournament
-	srv.GET("/typeTournament", handlers.GetCoache)
-	srv.GET("/typeTournament/:id", handlers.GetCoache)
-	srv.POST("/typeTournament", handlers.CreateCoache)
-	srv.PUT("/typeTournament", handlers.UpdateCoache)
-	srv.DELETE("/typeTournament/:id", handlers.DeleteCoache)
+	srv.GET("/typeTournament", handlers.GetTypeTournaments)
+	srv.GET("/typeTournament/:id", handlers.GetTypeTournament)
+	srv.POST("/typeTournament", handlers.CreateTypeTournament)
+	srv.PUT("/typeTournament", handlers.UpdateTypeTournament)
+	srv.DELETE("/typeTournament/:id", handlers.DeleteTypeTournament)
 
 }
 
