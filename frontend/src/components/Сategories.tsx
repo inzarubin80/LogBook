@@ -7,6 +7,9 @@ import EditIcon from "@mui/icons-material/Edit";
 import DeleteIcon from "@mui/icons-material/DeleteOutlined";
 import SaveIcon from "@mui/icons-material/Save";
 import CancelIcon from "@mui/icons-material/Cancel";
+import Snackbar from "@mui/material/Snackbar";
+import Alert from "@mui/material/Alert";
+import axios from "axios";
 
 import {
   GridRowsProp,
@@ -26,24 +29,18 @@ import {
 const initialRows: GridRowsProp = [];
 
 interface EditToolbarProps {
-  rows:GridRowsProp;
-   setRows: (newRows: (oldRows: GridRowsProp) => GridRowsProp) => void;
+  rows: GridRowsProp;
+  setRows: (newRows: (oldRows: GridRowsProp) => GridRowsProp) => void;
   setRowModesModel: (
     newModel: (oldModel: GridRowModesModel) => GridRowModesModel
   ) => void;
-
 }
 
 function EditToolbar(props: EditToolbarProps) {
-
-
   const { setRows, setRowModesModel, rows } = props;
-   const disabledAdd = (undefined!==rows.find(value=>value.id===-1))
-
-
+  const disabledAdd = undefined !== rows.find((value) => value.id === -1);
 
   const handleClick = () => {
-
     const id = -1;
     setRows((oldRows) => [...oldRows, { id, name: "", age: "", isNew: true }]);
     setRowModesModel((oldModel) => ({
@@ -66,7 +63,12 @@ function EditToolbar(props: EditToolbarProps) {
     <>
       <CustomToolbar />
       <GridToolbarContainer>
-        <Button color="primary" startIcon={<AddIcon />} onClick={handleClick} disabled={disabledAdd}>
+        <Button
+          color="primary"
+          startIcon={<AddIcon />}
+          onClick={handleClick}
+          disabled={disabledAdd}
+        >
           Добавить
         </Button>
       </GridToolbarContainer>
@@ -75,37 +77,40 @@ function EditToolbar(props: EditToolbarProps) {
 }
 
 export default function Сategories() {
-
   const [rows, setRows] = React.useState(initialRows);
   const [rowModesModel, setRowModesModel] = React.useState<GridRowModesModel>(
     {}
   );
 
+  const [errorApi, setErrorApi] = React.useState<string | null>(null);
+
+  const handleCloseErrorApi = (event?: React.SyntheticEvent | Event, reason?: string) => {
+    if (reason === 'clickaway') {
+      return;
+    }
+    setErrorApi(null);
+  };
+
+ 
+
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await fetch("api/category", {
+        const response = await axios.get("api/category", {
           headers: {
             "X-Requested-With": "XMLHttpRequest", // Замените 'Bearer your-token' на ваш токен авторизации
           },
         });
-
-        if (!response.ok) {
-          throw new Error(`Ошибка HTTP: ${response.status}`);
-        }
-
-        const data = await response.json();
-        console.log("получил данные", data)
-        setRows(data);
+        setRows(response.data);
       } catch (error) {
-        console.error("Ошибка при получении данных:", error);
+        setErrorApi(error instanceof Error ? error.message : 'Неизвестная ошибка');
       }
     };
 
     fetchData();
   }, []);
 
- 
+
 
   const handleRowEditStop: GridEventListener<"rowEditStop"> = (
     params,
@@ -121,38 +126,25 @@ export default function Сategories() {
   };
 
   const handleSaveClick = (id: GridRowId) => async () => {
- 
-      setRowModesModel({ ...rowModesModel, [id]: { mode: GridRowModes.View } });
-    
+    setRowModesModel({ ...rowModesModel, [id]: { mode: GridRowModes.View } });
   };
 
-  const handleDeleteClick = (id: GridRowId) => async() => {
-
-
+  const handleDeleteClick = (id: GridRowId) => async () => {
     try {
-      const response = await fetch(`api/category/${id}`,
-        {
-          method: 'DELETE',
-          headers: {
-            "X-Requested-With": "XMLHttpRequest", // Замените 'Bearer your-token' на ваш токен авторизации
-          },
-          body: JSON.stringify({id}),
-        }
-      );
 
-      if (!response.ok) {
-        throw new Error(`Ошибка HTTP: ${response.status}`);
-      } else {
-        const data = await response.json();
-        setRows(rows.filter((row) => row.id !== id));
-      }
-
+      await axios.delete(`api/category/${id}`, {
+        timeout: 5000,
+        headers: {
+          "X-Requested-With": "XMLHttpRequest", // Замените 'Bearer your-token' на ваш токен авторизации
+        },
+      });
+      setRows(rows.filter((row) => row.id !== id));
       setRowModesModel({ ...rowModesModel, [id]: { mode: GridRowModes.View } });
     } catch (error) {
-      console.error("Ошибка при получении данных:", error);
+      setErrorApi(error instanceof Error ? error.message : 'Неизвестная ошибка');
     }
-
   };
+
 
   const handleCancelClick = (id: GridRowId) => () => {
     setRowModesModel({
@@ -167,31 +159,24 @@ export default function Сategories() {
   };
 
   const processRowUpdate = async (newRow: GridRowModel) => {
-
     try {
-    const response = await fetch("api/category",
-        {
-          method: newRow.id === -1 ? "POST": "PUT",
-          headers: {
-            "X-Requested-With": "XMLHttpRequest", // Замените 'Bearer your-token' на ваш токен авторизации
-          },
-          body: JSON.stringify(newRow),
-        }
-      );
-
-      if (!response.ok) {
-        throw new Error(`Ошибка HTTP: ${response.status}`);
-      } else {
-   
-        const updatedRow = await response.json();
-        setRows(rows.map((row) => (row.id === newRow.id ? updatedRow : row)));
-        return updatedRow;
-
-      }
+      const response = await axios({
+        method: newRow.id === -1 ? "POST" : "PUT",
+        url: "api/category",
+        headers: {
+          "X-Requested-With": "XMLHttpRequest", // Замените 'Bearer your-token' на ваш токен авторизации
+        },
+        data: newRow,
+        timeout: 3000
+      });
+      const updatedRow = response.data;
+      setRows(rows.map((row) => (row.id === newRow.id ? updatedRow : row)));
+      return updatedRow;
     } catch (error) {
-      console.error("Ошибка при получении данных:", error);
+      setErrorApi(error instanceof Error ? error.message : 'Неизвестная ошибка');
     }
 
+    return false;
   };
 
   const handleRowModesModelChange = (newRowModesModel: GridRowModesModel) => {
@@ -283,22 +268,24 @@ export default function Сategories() {
         rowModesModel={rowModesModel}
         onRowModesModelChange={handleRowModesModelChange}
         onRowEditStop={handleRowEditStop}
-
-        //processRowUpdate={handleProcessRowUpdate}
-        //components={{
-        //Toolbar: CustomToolbar,
-        // }}
-
-        // components={{Toolbar: DataGridTitle}}
-
+        
         processRowUpdate={processRowUpdate}
         slots={{
           toolbar: EditToolbar as GridSlots["toolbar"],
         }}
         slotProps={{
-          toolbar: { setRows, setRowModesModel, rows},
+          toolbar: { setRows, setRowModesModel, rows },
         }}
       />
+
+       {errorApi!==null && (
+        <Snackbar open={errorApi!==null} autoHideDuration={6000} onClose={handleCloseErrorApi}>
+          <Alert onClose={handleCloseErrorApi} severity="error" sx={{ width: '100%' }}>
+            {errorApi}
+          </Alert>
+        </Snackbar>
+      )}
+
     </Box>
   );
 }
