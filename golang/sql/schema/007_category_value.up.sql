@@ -7,7 +7,7 @@ CREATE TABLE category_value
     created_at timestamp NOT NULL DEFAULT now(),
     updated_at timestamp NOT NULL DEFAULT now(),
     CONSTRAINT category_value_category_id_foreign FOREIGN KEY (category_id)
-        REFERENCES fl_category (id) MATCH SIMPLE
+        REFERENCES category (id) MATCH SIMPLE
         ON UPDATE NO ACTION
         ON DELETE RESTRICT
         NOT VALID

@@ -22,6 +22,7 @@ var (
 	CoacheNotFound         = errors.New("Post does not exist")
 	SportSchoolNotFound    = errors.New("Post does not exist")
 	TypeTournamentNotFound = errors.New("Post does not exist")
+	CategoryValueNotFound  = errors.New("Post does not exist")
 	ResetNotFound          = errors.New("Invalid password reset code")
 
 	BadCSRF           = errors.New("Missing CSRF Header")
@@ -49,6 +50,7 @@ func codeMap() map[error]int {
 		CategoryNotFound:       http.StatusNotFound,
 		SportSchoolNotFound:    http.StatusNotFound,
 		TypeTournamentNotFound: http.StatusNotFound,
+		CategoryValueNotFound:  http.StatusNotFound,
 		CoacheNotFound:         http.StatusNotFound,
 		ResetNotFound:          http.StatusNotFound,
 
