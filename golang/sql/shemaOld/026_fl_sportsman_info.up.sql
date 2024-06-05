@@ -1,4 +1,4 @@
-CREATE TABLE public.fl_sportsman_info
+CREATE TABLE IF NOT EXISTS public.fl_sportsman_info
 (
     id bigint NOT NULL DEFAULT nextval('fl_sportsman_info_id_seq'::regclass),
     period date NOT NULL,

@@ -22,6 +22,8 @@ import Сategories from "./Сategories";
 import SportSchools from "./SportSchools";
 import TypeTournaments from "./TypeTournaments";
 import Coaches from "./Coaches";
+import CategoryValue from "./CategoryValue";
+
 import { Anon, LoggedIn } from "../Shared/Roles";
 import LogIn from "./login/login";
 import Verify from "./Verify/Verify"
@@ -88,6 +90,8 @@ function ListRouter() {
       <ListItemLink to="/coache" primary="Тренеры" icon={<InboxIcon />} />
       <ListItemLink to="/typeTournament" primary="Типы турниров" icon={<InboxIcon />} />
       <ListItemLink to="/login" primary="Вход" icon={<DraftsIcon />} />
+      <ListItemLink to="/сategoryValue" primary="Значение категорий" icon={<DraftsIcon />} />
+
 
     </List>
   );
@@ -193,6 +197,8 @@ export default function MyBar() {
           <Route path="/coache" element={<Coaches />} />
           <Route path="/login" element={<LogIn />} />
           <Route path="/verify/:code" element={<Verify />} />
+          <Route path="/сategoryValue" element={<CategoryValue />} />
+        
 
         </Routes>
       </Main>

@@ -22,8 +22,11 @@ func CreateCategoryValue(env env.Env, user *db.User, w http.ResponseWriter, r *h
 	if err != nil || p == nil {
 		return write.Error(errors.NoJSONBody)
 	}
-
-	return write.JSONorErr(env.DB().CreateCategoryValue(r.Context(), p.Name))
+	
+	return write.JSONorErr(env.DB().CreateCategoryValue(r.Context(), db.CreateCategoryValueParams{
+		Name:p.Name,
+		CategoryID:p.CategoryID,	
+	}))
 }
 
 func GetCategoryValue(env env.Env, user *db.User, w http.ResponseWriter, r *http.Request) http.HandlerFunc {

@@ -10,7 +10,7 @@ import (
 
 type Querier interface {
 	CreateCategory(ctx context.Context, name string) (Category, error)
-	CreateCategoryValue(ctx context.Context, name string) (CategoryValue, error)
+	CreateCategoryValue(ctx context.Context, arg CreateCategoryValueParams) (CategoryValue, error)
 	CreateCoache(ctx context.Context, name string) (Coache, error)
 	CreateReset(ctx context.Context, arg CreateResetParams) (Reset, error)
 	CreateSportSchool(ctx context.Context, name string) (SportSchool, error)
@@ -23,7 +23,7 @@ type Querier interface {
 	DeleteSportSchoolByIDs(ctx context.Context, id int64) error
 	DeleteTypeTournamentByIDs(ctx context.Context, id int64) error
 	FindCategoryByIDs(ctx context.Context, id int64) (Category, error)
-	FindCategoryValueByIDs(ctx context.Context, id int64) (FindCategoryValueByIDsRow, error)
+	FindCategoryValueByIDs(ctx context.Context, id int64) (CategoryValue, error)
 	FindCoacheByIDs(ctx context.Context, id int64) (Coache, error)
 	FindResetByCode(ctx context.Context, code string) (Reset, error)
 	FindSportSchoolByIDs(ctx context.Context, id int64) (SportSchool, error)
