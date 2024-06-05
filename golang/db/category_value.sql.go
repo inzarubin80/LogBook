@@ -7,15 +7,19 @@ package db
 
 import (
 	"context"
-	"time"
 )
 
 const createCategoryValue = `-- name: CreateCategoryValue :one
-INSERT INTO category_value (name, created_at) VALUES ($1, NOW()) RETURNING id, name, category_id, created_at, updated_at
+INSERT INTO category_value (name, category_id) VALUES ($1, $2) RETURNING id, name, category_id, created_at, updated_at
 `
 
-func (q *Queries) CreateCategoryValue(ctx context.Context, name string) (CategoryValue, error) {
-	row := q.db.QueryRow(ctx, createCategoryValue, name)
+type CreateCategoryValueParams struct {
+	Name       string `json:"name"`
+	CategoryID int64  `json:"category_id"`
+}
+
+func (q *Queries) CreateCategoryValue(ctx context.Context, arg CreateCategoryValueParams) (CategoryValue, error) {
+	row := q.db.QueryRow(ctx, createCategoryValue, arg.Name, arg.CategoryID)
 	var i CategoryValue
 	err := row.Scan(
 		&i.ID,
@@ -37,22 +41,16 @@ func (q *Queries) DeleteCategoryValueByIDs(ctx context.Context, id int64) error 
 }
 
 const findCategoryValueByIDs = `-- name: FindCategoryValueByIDs :one
-SELECT id, name, created_at, updated_at FROM category_value WHERE  id = $1 LIMIT 1
+SELECT id, name, category_id, created_at, updated_at FROM category_value WHERE  id = $1 LIMIT 1
 `
 
-type FindCategoryValueByIDsRow struct {
-	ID        int64     `json:"id"`
-	Name      string    `json:"name"`
-	CreatedAt time.Time `json:"created_at"`
-	UpdatedAt time.Time `json:"updated_at"`
-}
-
-func (q *Queries) FindCategoryValueByIDs(ctx context.Context, id int64) (FindCategoryValueByIDsRow, error) {
+func (q *Queries) FindCategoryValueByIDs(ctx context.Context, id int64) (CategoryValue, error) {
 	row := q.db.QueryRow(ctx, findCategoryValueByIDs, id)
-	var i FindCategoryValueByIDsRow
+	var i CategoryValue
 	err := row.Scan(
 		&i.ID,
 		&i.Name,
+		&i.CategoryID,
 		&i.CreatedAt,
 		&i.UpdatedAt,
 	)
@@ -90,16 +88,17 @@ func (q *Queries) GetCategoryValues(ctx context.Context) ([]CategoryValue, error
 }
 
 const updateCategoryValue = `-- name: UpdateCategoryValue :one
-UPDATE category_value SET name = $1,  updated_at = NOW() WHERE id = $2  RETURNING id, name, category_id, created_at, updated_at
+UPDATE category_value SET name = $1, category_id= $3, updated_at = NOW() WHERE id = $2  RETURNING id, name, category_id, created_at, updated_at
 `
 
 type UpdateCategoryValueParams struct {
-	Name string `json:"name"`
-	ID   int64  `json:"id"`
+	Name       string `json:"name"`
+	ID         int64  `json:"id"`
+	CategoryID int64  `json:"category_id"`
 }
 
 func (q *Queries) UpdateCategoryValue(ctx context.Context, arg UpdateCategoryValueParams) (CategoryValue, error) {
-	row := q.db.QueryRow(ctx, updateCategoryValue, arg.Name, arg.ID)
+	row := q.db.QueryRow(ctx, updateCategoryValue, arg.Name, arg.ID, arg.CategoryID)
 	var i CategoryValue
 	err := row.Scan(
 		&i.ID,

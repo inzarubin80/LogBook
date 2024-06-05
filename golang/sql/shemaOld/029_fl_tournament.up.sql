@@ -1,4 +1,4 @@
-CREATE TABLE public.fl_tournament
+CREATE TABLE IF NOT EXISTS public.fl_tournament
 (
     id bigint NOT NULL DEFAULT nextval('fl_tournament_id_seq'::regclass),
     name character varying(50) COLLATE pg_catalog."default" NOT NULL,

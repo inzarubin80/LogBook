@@ -1,4 +1,4 @@
-CREATE TABLE public.fl_score_scale
+CREATE TABLE IF NOT EXISTS public.fl_score_scale
 (
     id bigint NOT NULL DEFAULT nextval('fl_score_scale_id_seq'::regclass),
     period date NOT NULL,
