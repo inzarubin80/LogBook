@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, CSSProperties } from "react";
 import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
 import Typography from "@mui/material/Typography";
@@ -10,6 +10,17 @@ import CancelIcon from "@mui/icons-material/Cancel";
 import Snackbar from "@mui/material/Snackbar";
 import Alert from "@mui/material/Alert";
 import axios from "axios";
+import Select from "react-select";
+
+
+import {
+  ColourOption,
+  colourOptions,
+  FlavourOption,
+  GroupedOption,
+  groupedOptions,
+} from './docs/data';
+
 
 import {
   GridRowsProp,
@@ -84,14 +95,15 @@ export default function CategoryValue() {
 
   const [errorApi, setErrorApi] = React.useState<string | null>(null);
 
-  const handleCloseErrorApi = (event?: React.SyntheticEvent | Event, reason?: string) => {
-    if (reason === 'clickaway') {
+  const handleCloseErrorApi = (
+    event?: React.SyntheticEvent | Event,
+    reason?: string
+  ) => {
+    if (reason === "clickaway") {
       return;
     }
     setErrorApi(null);
   };
-
- 
 
   useEffect(() => {
     const fetchData = async () => {
@@ -103,14 +115,14 @@ export default function CategoryValue() {
         });
         setRows(response.data);
       } catch (error) {
-        setErrorApi(error instanceof Error ? error.message : 'Неизвестная ошибка');
+        setErrorApi(
+          error instanceof Error ? error.message : "Неизвестная ошибка"
+        );
       }
     };
 
     fetchData();
   }, []);
-
-
 
   const handleRowEditStop: GridEventListener<"rowEditStop"> = (
     params,
@@ -131,7 +143,6 @@ export default function CategoryValue() {
 
   const handleDeleteClick = (id: GridRowId) => async () => {
     try {
-
       await axios.delete(`api/categoryValue/${id}`, {
         timeout: 5000,
         headers: {
@@ -141,10 +152,11 @@ export default function CategoryValue() {
       setRows(rows.filter((row) => row.id !== id));
       setRowModesModel({ ...rowModesModel, [id]: { mode: GridRowModes.View } });
     } catch (error) {
-      setErrorApi(error instanceof Error ? error.message : 'Неизвестная ошибка');
+      setErrorApi(
+        error instanceof Error ? error.message : "Неизвестная ошибка"
+      );
     }
   };
-
 
   const handleCancelClick = (id: GridRowId) => () => {
     setRowModesModel({
@@ -167,13 +179,15 @@ export default function CategoryValue() {
           "X-Requested-With": "XMLHttpRequest", // Замените 'Bearer your-token' на ваш токен авторизации
         },
         data: newRow,
-        timeout: 3000
+        timeout: 3000,
       });
       const updatedRow = response.data;
       setRows(rows.map((row) => (row.id === newRow.id ? updatedRow : row)));
       return updatedRow;
     } catch (error) {
-      setErrorApi(error instanceof Error ? error.message : 'Неизвестная ошибка');
+      setErrorApi(
+        error instanceof Error ? error.message : "Неизвестная ошибка"
+      );
     }
 
     return false;
@@ -182,6 +196,37 @@ export default function CategoryValue() {
   const handleRowModesModelChange = (newRowModesModel: GridRowModesModel) => {
     setRowModesModel(newRowModesModel);
   };
+
+
+  const groupStyles = {
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+  };
+  const groupBadgeStyles: CSSProperties = {
+    backgroundColor: '#EBECF0',
+    borderRadius: '2em',
+    color: '#172B4D',
+    display: 'inline-block',
+    fontSize: 12,
+    fontWeight: 'normal',
+    lineHeight: '1',
+    minWidth: 1,
+    padding: '0.16666666666667em 0.5em',
+    textAlign: 'center',
+  };
+  
+  const formatGroupLabel = (data: GroupedOption) => (
+    <div style={groupStyles}>
+      <span>{data.label}</span>
+      <span style={groupBadgeStyles}>{data.options.length}</span>
+    </div>
+  );
+
+  const paymentOptions = [
+    { value: "paid", label: "Paid" },
+    { value: "unpaid", label: "Un Paid" },
+  ];
 
   const columns: GridColDef[] = [
     {
@@ -199,6 +244,22 @@ export default function CategoryValue() {
       headerName: "Наименование",
       width: 300,
       editable: true,
+    },
+
+    {
+      field: "category_id",
+      headerName: "category_id",
+      width: 300,
+      editable: true,
+
+
+      renderEditCell: (params) => {
+        return <Select<ColourOption | FlavourOption, false, GroupedOption>
+        defaultValue={colourOptions[1]}
+        options={groupedOptions}
+        formatGroupLabel={formatGroupLabel}
+      />;
+      },
     },
 
     {
@@ -268,7 +329,6 @@ export default function CategoryValue() {
         rowModesModel={rowModesModel}
         onRowModesModelChange={handleRowModesModelChange}
         onRowEditStop={handleRowEditStop}
-        
         processRowUpdate={processRowUpdate}
         slots={{
           toolbar: EditToolbar as GridSlots["toolbar"],
@@ -278,14 +338,21 @@ export default function CategoryValue() {
         }}
       />
 
-       {errorApi!==null && (
-        <Snackbar open={errorApi!==null} autoHideDuration={6000} onClose={handleCloseErrorApi}>
-          <Alert onClose={handleCloseErrorApi} severity="error" sx={{ width: '100%' }}>
+      {errorApi !== null && (
+        <Snackbar
+          open={errorApi !== null}
+          autoHideDuration={6000}
+          onClose={handleCloseErrorApi}
+        >
+          <Alert
+            onClose={handleCloseErrorApi}
+            severity="error"
+            sx={{ width: "100%" }}
+          >
             {errorApi}
           </Alert>
         </Snackbar>
       )}
-
     </Box>
   );
 }
