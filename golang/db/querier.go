@@ -23,7 +23,7 @@ type Querier interface {
 	DeleteSportSchoolByIDs(ctx context.Context, id int64) error
 	DeleteTypeTournamentByIDs(ctx context.Context, id int64) error
 	FindCategoryByIDs(ctx context.Context, id int64) (Category, error)
-	FindCategoryValueByIDs(ctx context.Context, id int64) (CategoryValue, error)
+	FindCategoryValueByIDs(ctx context.Context, id int64) (FindCategoryValueByIDsRow, error)
 	FindCoacheByIDs(ctx context.Context, id int64) (Coache, error)
 	FindResetByCode(ctx context.Context, code string) (Reset, error)
 	FindSportSchoolByIDs(ctx context.Context, id int64) (SportSchool, error)
@@ -31,7 +31,7 @@ type Querier interface {
 	FindUserByEmail(ctx context.Context, lower string) (User, error)
 	FindUserByID(ctx context.Context, id int64) (User, error)
 	FindUserByVerificationCode(ctx context.Context, verification string) (User, error)
-	GetCategoryValues(ctx context.Context) ([]CategoryValue, error)
+	GetCategoryValues(ctx context.Context) ([]GetCategoryValuesRow, error)
 	GetCategorys(ctx context.Context) ([]Category, error)
 	GetCoaches(ctx context.Context) ([]Coache, error)
 	GetSportSchools(ctx context.Context) ([]SportSchool, error)

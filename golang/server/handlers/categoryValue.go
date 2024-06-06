@@ -2,7 +2,6 @@ package handlers
 
 import (
 	"encoding/json"
-	"log"
 	"net/http"
 
 	"github.com/inzarubin80/Logbook/auth/db"
@@ -70,9 +69,7 @@ func UpdateCategoryValue(env env.Env, user *db.User, w http.ResponseWriter, r *h
 		return write.Error(errors.NoJSONBody)
 	}
 
-	log.Println("p.ID", p.ID)
-	log.Println("p.Name", p.Name)
-	log.Println("p.CategoryID", p.CategoryID)
+	
 
 	return write.JSONorErr(env.DB().UpdateCategoryValue(r.Context(), db.UpdateCategoryValueParams{
 		Name: p.Name,

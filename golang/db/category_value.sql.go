@@ -41,41 +41,67 @@ func (q *Queries) DeleteCategoryValueByIDs(ctx context.Context, id int64) error 
 }
 
 const findCategoryValueByIDs = `-- name: FindCategoryValueByIDs :one
-SELECT id, name, category_id, created_at, updated_at FROM category_value WHERE  id = $1 LIMIT 1
+SELECT category_value.id as id, 
+category_value.name as name,  
+category.id as category_id, 
+category.name as category_name 
+FROM category_value as  category_value 
+    JOIN category as category 
+    on category_value.category_id =  category.id 
+WHERE  category_value.id = $1 LIMIT 1
 `
 
-func (q *Queries) FindCategoryValueByIDs(ctx context.Context, id int64) (CategoryValue, error) {
+type FindCategoryValueByIDsRow struct {
+	ID           int64  `json:"id"`
+	Name         string `json:"name"`
+	CategoryID   int64  `json:"category_id"`
+	CategoryName string `json:"category_name"`
+}
+
+func (q *Queries) FindCategoryValueByIDs(ctx context.Context, id int64) (FindCategoryValueByIDsRow, error) {
 	row := q.db.QueryRow(ctx, findCategoryValueByIDs, id)
-	var i CategoryValue
+	var i FindCategoryValueByIDsRow
 	err := row.Scan(
 		&i.ID,
 		&i.Name,
 		&i.CategoryID,
-		&i.CreatedAt,
-		&i.UpdatedAt,
+		&i.CategoryName,
 	)
 	return i, err
 }
 
 const getCategoryValues = `-- name: GetCategoryValues :many
-SELECT id, name, category_id, created_at, updated_at FROM category_value ORDER BY id DESC
+SELECT category_value.id as id, 
+category_value.name as name,  
+category.id as category_id, 
+category.name as category_name 
+FROM category_value 
+    JOIN category as category 
+    on category_value.category_id =  category.id 
+ORDER BY category.id DESC
 `
 
-func (q *Queries) GetCategoryValues(ctx context.Context) ([]CategoryValue, error) {
+type GetCategoryValuesRow struct {
+	ID           int64  `json:"id"`
+	Name         string `json:"name"`
+	CategoryID   int64  `json:"category_id"`
+	CategoryName string `json:"category_name"`
+}
+
+func (q *Queries) GetCategoryValues(ctx context.Context) ([]GetCategoryValuesRow, error) {
 	rows, err := q.db.Query(ctx, getCategoryValues)
 	if err != nil {
 		return nil, err
 	}
 	defer rows.Close()
-	items := []CategoryValue{}
+	items := []GetCategoryValuesRow{}
 	for rows.Next() {
-		var i CategoryValue
+		var i GetCategoryValuesRow
 		if err := rows.Scan(
 			&i.ID,
 			&i.Name,
 			&i.CategoryID,
-			&i.CreatedAt,
-			&i.UpdatedAt,
+			&i.CategoryName,
 		); err != nil {
 			return nil, err
 		}
