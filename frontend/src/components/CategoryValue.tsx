@@ -211,7 +211,7 @@ export default function CategoryValue() {
     fontSize: 12,
     fontWeight: 'normal',
     lineHeight: '1',
-    minWidth: 1,
+    minWidth: 300,
     padding: '0.16666666666667em 0.5em',
     textAlign: 'center',
   };
@@ -233,7 +233,7 @@ export default function CategoryValue() {
       field: "id",
       headerName: "ID",
       type: "number",
-      width: 100,
+      width: 300,
       align: "left",
       headerAlign: "left",
       editable: false,
@@ -254,11 +254,17 @@ export default function CategoryValue() {
 
 
       renderEditCell: (params) => {
-        return <Select<ColourOption | FlavourOption, false, GroupedOption>
+        return (
+      
+        <div style={{ display: 'flex', alignItems: 'center', height:300, width: '100%'}}>    
+        <Select<ColourOption | FlavourOption, false, GroupedOption>
         defaultValue={colourOptions[1]}
+     //   style={{ width: '100%' }}
         options={groupedOptions}
         formatGroupLabel={formatGroupLabel}
-      />;
+      />
+    </div> 
+    );
       },
     },
 
