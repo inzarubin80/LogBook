@@ -32,7 +32,7 @@ type Querier interface {
 	FindUserByID(ctx context.Context, id int64) (User, error)
 	FindUserByVerificationCode(ctx context.Context, verification string) (User, error)
 	GetCategoryValues(ctx context.Context) ([]GetCategoryValuesRow, error)
-	GetCategorys(ctx context.Context) ([]Category, error)
+	GetCategorys(ctx context.Context, name string) ([]Category, error)
 	GetCoaches(ctx context.Context) ([]Coache, error)
 	GetSportSchools(ctx context.Context) ([]SportSchool, error)
 	GetTypeTournaments(ctx context.Context) ([]TypeTournament, error)

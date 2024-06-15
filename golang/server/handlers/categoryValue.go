@@ -74,6 +74,7 @@ func UpdateCategoryValue(env env.Env, user *db.User, w http.ResponseWriter, r *h
 	return write.JSONorErr(env.DB().UpdateCategoryValue(r.Context(), db.UpdateCategoryValueParams{
 		Name: p.Name,
 		ID:   p.ID,
+		CategoryID:p.CategoryID, 
 	}))
 }
 

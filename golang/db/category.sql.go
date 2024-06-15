@@ -51,11 +51,11 @@ func (q *Queries) FindCategoryByIDs(ctx context.Context, id int64) (Category, er
 }
 
 const getCategorys = `-- name: GetCategorys :many
-SELECT id, name, created_at, updated_at FROM category ORDER BY id DESC
+SELECT id, name, created_at, updated_at FROM category Where name LIKE $1 OR $1 = '%%*%%' ORDER BY id DESC
 `
 
-func (q *Queries) GetCategorys(ctx context.Context) ([]Category, error) {
-	rows, err := q.db.Query(ctx, getCategorys)
+func (q *Queries) GetCategorys(ctx context.Context, name string) ([]Category, error) {
+	rows, err := q.db.Query(ctx, getCategorys, name)
 	if err != nil {
 		return nil, err
 	}

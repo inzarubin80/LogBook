@@ -92,7 +92,6 @@ export default function Сategories() {
   };
 
  
-
   useEffect(() => {
     const fetchData = async () => {
       try {
