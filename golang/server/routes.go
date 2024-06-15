@@ -41,7 +41,7 @@ func (srv *server) ConfigureRouter() {
 
 	// Categorys
 	srv.GET("/category", handlers.GetCategorys)
-	srv.GET("/categoryByName/:name", handlers.GetCategorysByName)
+	srv.GET("/categoryByName", handlers.GetCategorysByName)
 	srv.GET("/category/:id", handlers.GetCategory)
 	srv.POST("/category", handlers.CreateCategory)
 	srv.PUT("/category", handlers.UpdateCategory)
