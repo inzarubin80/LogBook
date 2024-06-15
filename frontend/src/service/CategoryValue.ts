@@ -22,8 +22,7 @@ const getCategoryByName = (name) => {
   if (encodedName === '') {
     encodedName = "*"
   }
-
-  return http.get(`/categoryByName/${encodedName}`);
+  return http.get(`/categoryByName?search=${encodedName}`);
 };
 
 const createUpdate = (data:CategoryValuecCeateUpdate) => {

@@ -59,11 +59,9 @@ func GetCategorysByName(env env.Env, user *db.User, w http.ResponseWriter, r *ht
 	if user.Status != db.UserStatusActive {
 		return write.Error(errors.RouteUnauthorized)
 	}
-	name:= getString("name", r)
-
-	name = "%%" + name + "%%"
-
-	return write.JSONorErr(env.DB().GetCategorys(r.Context(), name))
+	search:= getStringQuery("search", r)
+	search = "%%" + search + "%%"
+	return write.JSONorErr(env.DB().GetCategorys(r.Context(), search))
 }
 
 

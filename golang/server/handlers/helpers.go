@@ -40,3 +40,8 @@ func getString(name string, r *http.Request) (param string) {
 	params := httprouter.ParamsFromContext(r.Context())
 	return params.ByName(name)
 }
+
+func getStringQuery(name string, r *http.Request) (param string) {
+	queryValues := r.URL.Query()
+	return queryValues.Get(name)
+}
