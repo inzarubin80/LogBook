@@ -17,7 +17,7 @@ FROM category_value as  category_value
     on category_value.category_id =  category.id 
 WHERE  category_value.id = $1 LIMIT 1;
 
--- name: GetCategoryValues :maсвny
+-- name: GetCategoryValues :many
 SELECT category_value.id as id, 
 category_value.name as name,  
 category.id as category_id, 
