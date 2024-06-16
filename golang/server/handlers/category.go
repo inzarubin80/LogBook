@@ -51,7 +51,7 @@ func GetCategorys(env env.Env, user *db.User, w http.ResponseWriter, r *http.Req
 	if user.Status != db.UserStatusActive {
 		return write.Error(errors.RouteUnauthorized)
 	}
-	return write.JSONorErr(env.DB().GetCategorys(r.Context(), ""))
+	return write.JSONorErr(env.DB().GetCategorys(r.Context(), "%%*%%"))
 }
 
 

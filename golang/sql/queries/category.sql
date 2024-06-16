@@ -11,4 +11,4 @@ DELETE FROM category WHERE id = $1;
 SELECT id, name, created_at, updated_at FROM category WHERE  id = $1 LIMIT 1;
 
 -- name: GetCategorys :many
-SELECT * FROM category Where name LIKE $1 OR $1 = '%%*%%' ORDER BY id DESC;
+SELECT * FROM category Where name ILIKE  $1 OR $1 = '%%*%%' ORDER BY id DESC;

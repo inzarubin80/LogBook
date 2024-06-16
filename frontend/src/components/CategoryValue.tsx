@@ -13,6 +13,9 @@ import EditIcon from "@mui/icons-material/Edit";
 import SaveIcon from "@mui/icons-material/Save";
 import AddIcon from "@mui/icons-material/AddCircle";
 import CancelIcon from "@mui/icons-material/Cancel";
+import Snackbar from "@mui/material/Snackbar";
+import Alert from "@mui/material/Alert";
+import { useTheme } from '@mui/material';
 
 import {
   CategoryValueService,
@@ -28,6 +31,11 @@ interface CategoryValueTab {
   _name: string;
   _category_id: number;
   _category_name: string;
+
+  errorName: string;
+  errorCategory: string;
+  
+
 }
 
 const loadOptions = (inputValue, callback) => {
@@ -47,18 +55,36 @@ const loadOptions = (inputValue, callback) => {
 
 const CategoryValueList: React.FC = () => {
   const [CategoryValues, setCategoryValues] = useState<CategoryValueTab[]>([]);
+  const [errorApi, setErrorApi] = React.useState<string | null>(null);
+
+  const theme = useTheme();
+  const errorColor = theme.palette.error.main;
+  const errorFontSize = theme.typography.caption.fontSize;
+
 
   useEffect(() => {
     retrieveCategoryValue();
   }, []);
 
+  const handleCloseErrorApi = (
+    event?: React.SyntheticEvent | Event,
+    reason?: string
+  ) => {
+    if (reason === "clickaway") {
+      return;
+    }
+    setErrorApi(null);
+  };
+
   const retrieveCategoryValue = () => {
+    setErrorApi(null);
+
     CategoryValueService.getAll()
       .then((response) => {
         setCategoryValues(response.data);
       })
       .catch((e) => {
-        console.log(e);
+        setErrorApi(e instanceof Error ? e.message : "Неизвестная ошибка");
       });
   };
 
@@ -74,6 +100,9 @@ const CategoryValueList: React.FC = () => {
         _name: "",
         _category_id: 0,
         _category_name: "",
+        errorName:"",
+        errorCategory:""
+
       },
     ]);
   };
@@ -85,6 +114,8 @@ const CategoryValueList: React.FC = () => {
       _category_id: categoryValue.category_id,
       _category_name: categoryValue.category_name,
       changes: true,
+      errorName:"",
+      errorCategory:""
     };
     setCategoryValues((prev) =>
       prev.map((item) =>
@@ -93,16 +124,42 @@ const CategoryValueList: React.FC = () => {
     );
   };
 
-  const handleSaveCategoryValue = async (
-    id: number,
-    updatedCategoryValue: CategoryValueTab
-  ) => {
+
+  const validation = (updatedCategoryValue: CategoryValueTab) => {
+
+    let isValid = true;
+
+    
+    const emptyValueError = "Не заполнено значение поля";
+
+
+    if (updatedCategoryValue._name==="" ||  updatedCategoryValue._category_id===0)  {
+      isValid = false
+    }
+
+    updatedCategoryValue = {...updatedCategoryValue, 
+      errorName: updatedCategoryValue._name===""?emptyValueError:"", 
+    errorCategory: updatedCategoryValue._category_id===0? emptyValueError:""}
+
+    handleUpdateCategoryValue(updatedCategoryValue.id, updatedCategoryValue)
+
+    return isValid;
+
+  }
+
+  const handleSaveCategoryValue = async (id: number,updatedCategoryValue: CategoryValueTab) => {
+
     const inApiCategoryValue: CategoryValuecCeateUpdate = {
       id: updatedCategoryValue.id,
       name: updatedCategoryValue._name,
       category_id: updatedCategoryValue._category_id,
     };
 
+
+   if (validation(updatedCategoryValue)!==true) {
+    return;
+   }
+   
     try {
       const response = await CategoryValueService.createUpdate(
         inApiCategoryValue
@@ -117,6 +174,8 @@ const CategoryValueList: React.FC = () => {
         _name: "",
         _category_id: 0,
         _category_name: "",
+        errorCategory:"",
+        errorName:""
       };
       setCategoryValues(
         CategoryValues.map((categoryValue) =>
@@ -124,7 +183,11 @@ const CategoryValueList: React.FC = () => {
         )
       );
     } catch (error) {
-      // setErrorApi(error instanceof Error ? error.message : 'Неизвестная ошибка');
+
+      setErrorApi(
+        error instanceof Error ? error.message : "Неизвестная ошибка"
+      );
+
     }
   };
 
@@ -152,6 +215,8 @@ const CategoryValueList: React.FC = () => {
   };
 
   const handleDeleteCategoryValue = (id: number) => {
+    setErrorApi(null);
+
     CategoryValueService.remove(id)
       .then((response) => {
         setCategoryValues(
@@ -159,7 +224,7 @@ const CategoryValueList: React.FC = () => {
         );
       })
       .catch((e) => {
-        console.log(e);
+        setErrorApi(e instanceof Error ? e.message : "Неизвестная ошибка");
       });
   };
   return (
@@ -195,10 +260,15 @@ const CategoryValueList: React.FC = () => {
                 {item.changes && (
                   <TextField
                     value={item._name}
+                    fullWidth 
+
+                    error={!!item.errorName}
+                    helperText={item.errorName}
+
                     onChange={(e) => {
                       const updatedCategoryValue: CategoryValueTab = {
                         ...item,
-                        ...{ _name: e.target.value },
+                        ...{ _name: e.target.value, errorName:"" },
                       };
                       handleUpdateCategoryValue(item.id, updatedCategoryValue);
                     }}
@@ -209,6 +279,9 @@ const CategoryValueList: React.FC = () => {
 
               <TableCell>
                 {item.changes && (
+                  
+                  <>
+                
                   <AsyncSelect
                     loadOptions={loadOptions}
                     onChange={(selectOpt: any) => {
@@ -217,11 +290,26 @@ const CategoryValueList: React.FC = () => {
                         ...{
                           _category_name: selectOpt?.label,
                           _category_id: Number(selectOpt.value),
+                          errorCategory:"",
                         },
                       };
                       handleUpdateCategoryValue(item.id, updatedCategoryValue);
                     }}
+
+                    styles={{
+                      control: (baseStyles, state) => ({
+                        ...baseStyles,
+                        borderColor: item.errorCategory!=="" ? errorColor : '',
+                        padding:0
+                      }),
+                    }}
+
                   />
+
+                  {item.errorCategory && <p style={{ color: errorColor, fontSize: errorFontSize}}>{item.errorCategory}</p>}
+
+                  </>
+
                 )}
                 {!item.changes && <>{item.category_name}</>}
               </TableCell>
@@ -245,17 +333,17 @@ const CategoryValueList: React.FC = () => {
                   </IconButton>
                 )}
 
-                <IconButton
+              {!item.changes && <IconButton
                   onClick={() => handleDeleteCategoryValue(item.id)}
                   aria-label="delete"
                   color="warning"
                 >
                   <DeleteIcon />
                 </IconButton>
-
+                }
                 {item.changes && (
                   <IconButton onClick={() => handleCancel(item.id)}>
-                    <CancelIcon/>
+                    <CancelIcon />
                   </IconButton>
                 )}
               </TableCell>
@@ -263,6 +351,22 @@ const CategoryValueList: React.FC = () => {
           ))}
         </TableBody>
       </Table>
+
+      {errorApi !== null && (
+        <Snackbar
+          open={errorApi !== null}
+          autoHideDuration={6000}
+          onClose={handleCloseErrorApi}
+        >
+          <Alert
+            onClose={handleCloseErrorApi}
+            severity="error"
+            sx={{ width: "100%" }}
+          >
+            {errorApi}
+          </Alert>
+        </Snackbar>
+      )}
     </div>
   );
 };
