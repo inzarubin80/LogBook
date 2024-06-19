@@ -1,312 +1,274 @@
-import React, { useEffect } from "react";
-import Box from "@mui/material/Box";
-import Button from "@mui/material/Button";
+import React, { useState, useEffect } from "react";
+import Table from "@mui/material/Table";
+import TableBody from "@mui/material/TableBody";
+import TableCell from "@mui/material/TableCell";
+import TableHead from "@mui/material/TableHead";
+import TableRow from "@mui/material/TableRow";
+import IconButton from "@mui/material/IconButton";
+import TextField from "@mui/material/TextField";
 import Typography from "@mui/material/Typography";
-import AddIcon from "@mui/icons-material/Add";
+import DeleteIcon from "@mui/icons-material/Delete";
 import EditIcon from "@mui/icons-material/Edit";
-import DeleteIcon from "@mui/icons-material/DeleteOutlined";
 import SaveIcon from "@mui/icons-material/Save";
+import AddIcon from "@mui/icons-material/AddCircle";
 import CancelIcon from "@mui/icons-material/Cancel";
+import Snackbar from "@mui/material/Snackbar";
+import Alert from "@mui/material/Alert";
+import { useTheme } from "@mui/material";
+import {service, ceateUpdateType } from "../service/TypeTournaments";
 
-import {
-  GridRowsProp,
-  GridRowModes,
-  GridRowModesModel,
-  DataGrid,
-  GridColDef,
-  GridToolbarContainer,
-  GridActionsCellItem,
-  GridEventListener,
-  GridRowId,
-  GridRowModel,
-  GridRowEditStopReasons,
-  GridSlots,
-} from "@mui/x-data-grid";
-
-const initialRows: GridRowsProp = [];
-
-interface EditToolbarProps {
-  rows:GridRowsProp;
-   setRows: (newRows: (oldRows: GridRowsProp) => GridRowsProp) => void;
-  setRowModesModel: (
-    newModel: (oldModel: GridRowModesModel) => GridRowModesModel
-  ) => void;
-
+interface valueTab {
+  id: number;
+  name: string;
+  changes: boolean;
+  _name: string;
+  errorName: string;
 }
 
-function EditToolbar(props: EditToolbarProps) {
+const List: React.FC = () => {
+  const [values, setValues] = useState<valueTab[]>([]);
+  const [errorApi, setErrorApi] = React.useState<string | null>(null);
 
-
-  const { setRows, setRowModesModel, rows } = props;
-   const disabledAdd = (undefined!==rows.find(value=>value.id===-1))
-
-
-
-  const handleClick = () => {
-
-    const id = -1;
-    setRows((oldRows) => [...oldRows, { id, name: "", age: "", isNew: true }]);
-    setRowModesModel((oldModel) => ({
-      ...oldModel,
-      [id]: { mode: GridRowModes.Edit, fieldToFocus: "name" },
-    }));
-  };
-
-  function CustomToolbar() {
-    return (
-      <GridToolbarContainer>
-        <Typography variant="h4" component="h4" color="primary">
-          Типы турниров
-        </Typography>
-      </GridToolbarContainer>
-    );
-  }
-
-  return (
-    <>
-      <CustomToolbar />
-      <GridToolbarContainer>
-        <Button color="primary" startIcon={<AddIcon />} onClick={handleClick} disabled={disabledAdd}>
-          Добавить
-        </Button>
-      </GridToolbarContainer>
-    </>
-  );
-}
-
-export default function TypeTournaments() {
-
-  const [rows, setRows] = React.useState(initialRows);
-  const [rowModesModel, setRowModesModel] = React.useState<GridRowModesModel>(
-    {}
-  );
+  const theme = useTheme();
 
   useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const response = await fetch("api/typeTournament", {
-          headers: {
-            "X-Requested-With": "XMLHttpRequest", // Замените 'Bearer your-token' на ваш токен авторизации
-          },
-        });
-
-        if (!response.ok) {
-          throw new Error(`Ошибка HTTP: ${response.status}`);
-        }
-
-        const data = await response.json();
-        console.log("получил данные", data)
-        setRows(data);
-      } catch (error) {
-        console.error("Ошибка при получении данных:", error);
-      }
-    };
-
-    fetchData();
+    retrieveCategoryValue();
   }, []);
 
- 
-
-  const handleRowEditStop: GridEventListener<"rowEditStop"> = (
-    params,
-    event
+  const handleCloseErrorApi = (
+    event?: React.SyntheticEvent | Event,
+    reason?: string
   ) => {
-    if (params.reason === GridRowEditStopReasons.rowFocusOut) {
-      event.defaultMuiPrevented = true;
+    if (reason === "clickaway") {
+      return;
     }
+    setErrorApi(null);
   };
 
-  const handleEditClick = (id: GridRowId) => () => {
-    setRowModesModel({ ...rowModesModel, [id]: { mode: GridRowModes.Edit } });
+  const retrieveCategoryValue = () => {
+    setErrorApi(null);
+
+    service
+      .getAll()
+      .then((response) => {
+        setValues(response.data);
+      })
+      .catch((e) => {
+        setErrorApi(e instanceof Error ? e.message : "Неизвестная ошибка");
+      });
   };
 
-  const handleSaveClick = (id: GridRowId) => async () => {
- 
-      setRowModesModel({ ...rowModesModel, [id]: { mode: GridRowModes.View } });
-    
-  };
-
-  const handleDeleteClick = (id: GridRowId) => async() => {
-
-
-    try {
-      const response = await fetch(`api/typeTournament/${id}`,
-        {
-          method: 'DELETE',
-          headers: {
-            "X-Requested-With": "XMLHttpRequest", // Замените 'Bearer your-token' на ваш токен авторизации
-          },
-          body: JSON.stringify({id}),
-        }
-      );
-
-      if (!response.ok) {
-        throw new Error(`Ошибка HTTP: ${response.status}`);
-      } else {
-        const data = await response.json();
-        setRows(rows.filter((row) => row.id !== id));
-      }
-
-      setRowModesModel({ ...rowModesModel, [id]: { mode: GridRowModes.View } });
-    } catch (error) {
-      console.error("Ошибка при получении данных:", error);
-    }
-
-  };
-
-  const handleCancelClick = (id: GridRowId) => () => {
-    setRowModesModel({
-      ...rowModesModel,
-      [id]: { mode: GridRowModes.View, ignoreModifications: true },
-    });
-
-    const editedRow = rows.find((row) => row.id === id);
-    if (editedRow!.isNew) {
-      setRows(rows.filter((row) => row.id !== id));
-    }
-  };
-
-  const processRowUpdate = async (newRow: GridRowModel) => {
-
-
-    try {
-    const response = await fetch("api/typeTournament",
-        {
-          method: newRow.id === -1 ? "POST": "PUT",
-          headers: {
-            "X-Requested-With": "XMLHttpRequest", // Замените 'Bearer your-token' на ваш токен авторизации
-          },
-          body: JSON.stringify(newRow),
-        }
-      );
-
-
-      if (!response.ok) {
-        throw new Error(`Ошибка HTTP: ${response.status}`);
-      } else {
-   
-
-        const updatedRow = await response.json();
-       // const updatedRow = { ...newRow, isNew: false };
-        setRows(rows.map((row) => (row.id === newRow.id ? updatedRow : row)));
-        return updatedRow;
-
-      }
-    } catch (error) {
-      console.error("Ошибка при получении данных:", error);
-    }
-
-    
-  
-  
-  
-  };
-
-  const handleRowModesModelChange = (newRowModesModel: GridRowModesModel) => {
-    setRowModesModel(newRowModesModel);
-  };
-
-  const columns: GridColDef[] = [
-    {
-      field: "id",
-      headerName: "ID",
-      type: "number",
-      width: 100,
-      align: "left",
-      headerAlign: "left",
-      editable: false,
-    },
-
-    {
-      field: "name",
-      headerName: "Наименование",
-      width: 300,
-      editable: true,
-    },
-
-    {
-      field: "actions",
-      type: "actions",
-      headerName: "Действия",
-      width: 100,
-      cellClassName: "actions",
-      getActions: ({ id }) => {
-        const isInEditMode = rowModesModel[id]?.mode === GridRowModes.Edit;
-        if (isInEditMode) {
-          return [
-            <GridActionsCellItem
-              icon={<SaveIcon />}
-              label="Save"
-              sx={{
-                color: "primary.main",
-              }}
-              onClick={handleSaveClick(id)}
-            />,
-            <GridActionsCellItem
-              icon={<CancelIcon />}
-              label="Cancel"
-              className="textPrimary"
-              onClick={handleCancelClick(id)}
-              color="inherit"
-            />,
-          ];
-        }
-
-        return [
-          <GridActionsCellItem
-            icon={<EditIcon />}
-            label="Edit"
-            className="textPrimary"
-            onClick={handleEditClick(id)}
-            color="inherit"
-          />,
-          <GridActionsCellItem
-            icon={<DeleteIcon />}
-            label="Delete"
-            onClick={handleDeleteClick(id)}
-            color="inherit"
-          />,
-        ];
+  const handleCreateCategoryValue = () => {
+    setValues((prev) => [
+      ...prev,
+      {
+        id: 0,
+        name: "",
+        changes: true,
+        _name: "",
+        errorName: "",
+        errorCategory: "",
       },
-    },
-  ];
+    ]);
+  };
 
+  const handleChanges = (value: valueTab) => {
+    const changesValue = {
+      ...value,
+      _name: value.name,
+      changes: true,
+      errorName: "",
+      errorCategory: "",
+    };
+    setValues((prev) =>
+      prev.map((item) => (item.id === value.id ? changesValue : item))
+    );
+  };
+
+  const validation = (updatedCategoryValue: valueTab) => {
+    let isValid = true;
+
+    const emptyValueError = "Не заполнено значение поля";
+
+    if (updatedCategoryValue._name === "") {
+      isValid = false;
+    }
+
+    updatedCategoryValue = {
+      ...updatedCategoryValue,
+      errorName: updatedCategoryValue._name === "" ? emptyValueError : "",
+    };
+
+    handleUpdate(updatedCategoryValue.id, updatedCategoryValue);
+
+    return isValid;
+  };
+
+  const handleSave = async (id: number, updatedValue: valueTab) => {
+    const inApiValue: ceateUpdateType = {
+      id: updatedValue.id,
+      name: updatedValue._name,
+    };
+
+    if (validation(updatedValue) !== true) {
+      return;
+    }
+
+    try {
+      const response = await service.createUpdate(inApiValue);
+      const responseCategoryValue = response.data;
+      const inStateValue: valueTab = {
+        id: responseCategoryValue.id,
+        name: updatedValue._name,
+        changes: false,
+        _name: "",
+        errorName: "",
+      };
+      setValues(
+        values.map((value) => (value.id === id ? inStateValue : value))
+      );
+    } catch (error) {
+      setErrorApi(
+        error instanceof Error ? error.message : "Неизвестная ошибка"
+      );
+    }
+  };
+
+  const handleCancel = (id: number) => {
+    if (id === 0) {
+      setValues((prev) => prev.filter((item) => item.id !== id));
+    } else {
+      setValues((prev) =>
+        prev.map((item) =>
+          item.id === id ? { ...item, changes: false } : item
+        )
+      );
+    }
+  };
+
+  const handleUpdate = async (id: number, updateValue: valueTab) => {
+    const item = values.find((item) => item.id === id);
+    const updateItem = { ...item, ...updateValue };
+    setValues((prev) =>
+      prev.map((item) => (item.id === id ? updateItem : item))
+    );
+  };
+
+  const handleDelete = (id: number) => {
+    setErrorApi(null);
+
+    service
+      .remove(id)
+      .then((response) => {
+        setValues(values.filter((value) => value.id !== id));
+      })
+      .catch((e) => {
+        setErrorApi(e instanceof Error ? e.message : "Неизвестная ошибка");
+      });
+  };
   return (
-    <Box
-      sx={{
-        height: 500,
-        width: "100%",
-        "& .actions": {
-          color: "text.secondary",
-        },
-        "& .textPrimary": {
-          color: "text.primary",
-        },
-      }}
-    >
-      <DataGrid
-        rows={rows}
-        columns={columns}
-        editMode="row"
-        rowModesModel={rowModesModel}
-        onRowModesModelChange={handleRowModesModelChange}
-        onRowEditStop={handleRowEditStop}
+    <div>
+      <Typography variant="h4" component="h1" gutterBottom>
+        Типы турниров
+      </Typography>
+      <div>
+        <IconButton
+          onClick={handleCreateCategoryValue}
+          color="primary"
+          disabled={values.find((item) => item.id === 0) !== undefined}
+        >
+          <AddIcon />
+          Добавить
+        </IconButton>
+      </div>
+      <Table aria-label="simple table">
+        <TableHead>
+          <TableRow>
+            <TableCell>ID</TableCell>
+            <TableCell>Наименование</TableCell>
+            <TableCell>Действия</TableCell>
+          </TableRow>
+        </TableHead>
+        <TableBody>
+          {values.map((item) => (
+            <TableRow key={item.id}>
+              <TableCell>{item.id}</TableCell>
 
-        //processRowUpdate={handleProcessRowUpdate}
-        //components={{
-        //Toolbar: CustomToolbar,
-        // }}
+              <TableCell>
+                {item.changes && (
+                  <TextField
+                    value={item._name}
+                    fullWidth
+                    error={!!item.errorName}
+                    helperText={item.errorName}
+                    onChange={(e) => {
+                      const updatedValue: valueTab = {
+                        ...item,
+                        ...{ _name: e.target.value, errorName: "" },
+                      };
+                      handleUpdate(item.id, updatedValue);
+                    }}
+                  />
+                )}
+                {!item.changes && <>{item.name}</>}
+              </TableCell>
 
-        // components={{Toolbar: DataGridTitle}}
+              <TableCell>
+                {!item.changes && (
+                  <IconButton
+                    onClick={() => handleChanges(item)}
+                    color="default"
+                  >
+                    <EditIcon />
+                  </IconButton>
+                )}
 
-        processRowUpdate={processRowUpdate}
-        slots={{
-          toolbar: EditToolbar as GridSlots["toolbar"],
-        }}
-        slotProps={{
-          toolbar: { setRows, setRowModesModel, rows},
-        }}
-      />
-    </Box>
+                {item.changes && (
+                  <IconButton
+                    onClick={() => handleSave(item.id, item)}
+                    color="default"
+                  >
+                    <SaveIcon />
+                  </IconButton>
+                )}
+
+                {!item.changes && (
+                  <IconButton
+                    onClick={() => handleDelete(item.id)}
+                    aria-label="delete"
+                    color="warning"
+                  >
+                    <DeleteIcon />
+                  </IconButton>
+                )}
+                {item.changes && (
+                  <IconButton onClick={() => handleCancel(item.id)}>
+                    <CancelIcon />
+                  </IconButton>
+                )}
+              </TableCell>
+            </TableRow>
+          ))}
+        </TableBody>
+      </Table>
+
+      {errorApi !== null && (
+        <Snackbar
+          open={errorApi !== null}
+          autoHideDuration={6000}
+          onClose={handleCloseErrorApi}
+        >
+          <Alert
+            onClose={handleCloseErrorApi}
+            severity="error"
+            sx={{ width: "100%" }}
+          >
+            {errorApi}
+          </Alert>
+        </Snackbar>
+      )}
+    </div>
   );
-}
+};
+
+export default List;

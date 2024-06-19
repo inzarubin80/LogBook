@@ -31,7 +31,6 @@ interface CategoryValueTab {
   _name: string;
   _category_id: number;
   _category_name: string;
-
   errorName: string;
   errorCategory: string;
   
