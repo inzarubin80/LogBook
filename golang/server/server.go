@@ -3,9 +3,7 @@ package server
 import (
 	"net/http"
 	"os"
-
 	"github.com/julienschmidt/httprouter"
-
 	"github.com/inzarubin80/Logbook/auth/env"
 	"github.com/inzarubin80/Logbook/auth/errors"
 	"github.com/inzarubin80/Logbook/auth/server/write"
