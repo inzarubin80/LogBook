@@ -11,4 +11,4 @@ DELETE FROM type_tournament WHERE id = $1;
 SELECT id, name, created_at, updated_at FROM type_tournament WHERE  id = $1 LIMIT 1;
 
 -- name: GetTypeTournaments :many
-SELECT * FROM type_tournament ORDER BY id DESC;
+SELECT * FROM type_tournament Where name ILIKE  $1 OR $1 = '%%*%%' ORDER BY id DESC;

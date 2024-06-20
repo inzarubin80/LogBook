@@ -81,6 +81,17 @@ type Reset struct {
 	CreatedAt time.Time `json:"created_at"`
 }
 
+type ScoreScale struct {
+	ID               int64     `json:"id"`
+	PlaceFrom        int32     `json:"place_from"`
+	PlaceTo          int32     `json:"place_to"`
+	NumbersOfPoints  int32     `json:"numbers_of_points"`
+	SportSchoolID    int64     `json:"sport_school_id"`
+	TypeTournamentID int64     `json:"type_tournament_id"`
+	CreatedAt        time.Time `json:"created_at"`
+	UpdatedAt        time.Time `json:"updated_at"`
+}
+
 type SportSchool struct {
 	ID        int64     `json:"id"`
 	Name      string    `json:"name"`

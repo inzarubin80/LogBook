@@ -13,6 +13,7 @@ type Querier interface {
 	CreateCategoryValue(ctx context.Context, arg CreateCategoryValueParams) (CategoryValue, error)
 	CreateCoache(ctx context.Context, name string) (Coache, error)
 	CreateReset(ctx context.Context, arg CreateResetParams) (Reset, error)
+	CreateScoreScale(ctx context.Context, arg CreateScoreScaleParams) (ScoreScale, error)
 	CreateSportSchool(ctx context.Context, name string) (SportSchool, error)
 	CreateTypeTournament(ctx context.Context, name string) (TypeTournament, error)
 	CreateUser(ctx context.Context, arg CreateUserParams) (User, error)
@@ -20,12 +21,14 @@ type Querier interface {
 	DeleteCategoryValueByIDs(ctx context.Context, id int64) error
 	DeleteCoacheByIDs(ctx context.Context, id int64) error
 	DeleteResetsForUser(ctx context.Context, userID int64) error
+	DeleteScoreScaleByIDs(ctx context.Context, id int64) error
 	DeleteSportSchoolByIDs(ctx context.Context, id int64) error
 	DeleteTypeTournamentByIDs(ctx context.Context, id int64) error
 	FindCategoryByIDs(ctx context.Context, id int64) (Category, error)
 	FindCategoryValueByIDs(ctx context.Context, id int64) (FindCategoryValueByIDsRow, error)
 	FindCoacheByIDs(ctx context.Context, id int64) (Coache, error)
 	FindResetByCode(ctx context.Context, code string) (Reset, error)
+	FindScoreScaleByIDs(ctx context.Context, id int64) (FindScoreScaleByIDsRow, error)
 	FindSportSchoolByIDs(ctx context.Context, id int64) (SportSchool, error)
 	FindTypeTournamentByIDs(ctx context.Context, id int64) (TypeTournament, error)
 	FindUserByEmail(ctx context.Context, lower string) (User, error)
@@ -34,11 +37,13 @@ type Querier interface {
 	GetCategoryValues(ctx context.Context) ([]GetCategoryValuesRow, error)
 	GetCategorys(ctx context.Context, name string) ([]Category, error)
 	GetCoaches(ctx context.Context) ([]Coache, error)
-	GetSportSchools(ctx context.Context) ([]SportSchool, error)
-	GetTypeTournaments(ctx context.Context) ([]TypeTournament, error)
+	GetScoreScales(ctx context.Context) ([]GetScoreScalesRow, error)
+	GetSportSchools(ctx context.Context, name string) ([]SportSchool, error)
+	GetTypeTournaments(ctx context.Context, name string) ([]TypeTournament, error)
 	UpdateCategory(ctx context.Context, arg UpdateCategoryParams) (Category, error)
 	UpdateCategoryValue(ctx context.Context, arg UpdateCategoryValueParams) (CategoryValue, error)
 	UpdateCoache(ctx context.Context, arg UpdateCoacheParams) (Coache, error)
+	UpdateScoreScale(ctx context.Context, arg UpdateScoreScaleParams) (ScoreScale, error)
 	UpdateSportSchool(ctx context.Context, arg UpdateSportSchoolParams) (SportSchool, error)
 	UpdateTypeTournament(ctx context.Context, arg UpdateTypeTournamentParams) (TypeTournament, error)
 	UpdateUserPassword(ctx context.Context, arg UpdateUserPasswordParams) error

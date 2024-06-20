@@ -52,7 +52,16 @@ func GetTypeTournaments(env env.Env, user *db.User, w http.ResponseWriter, r *ht
 		return write.Error(errors.RouteUnauthorized)
 	}
 
-	return write.JSONorErr(env.DB().GetTypeTournaments(r.Context()))
+	return write.JSONorErr(env.DB().GetTypeTournaments(r.Context(), "%%*%%"))
+}
+
+func GetTypeTournamentsByName(env env.Env, user *db.User, w http.ResponseWriter, r *http.Request) http.HandlerFunc {
+	if user.Status != db.UserStatusActive {
+		return write.Error(errors.RouteUnauthorized)
+	}
+	search := getStringQuery("search", r)
+	search = "%%" + search + "%%"
+	return write.JSONorErr(env.DB().GetTypeTournaments(r.Context(), search))
 }
 
 func UpdateTypeTournament(env env.Env, user *db.User, w http.ResponseWriter, r *http.Request) http.HandlerFunc {

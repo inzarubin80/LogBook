@@ -49,6 +49,7 @@ func (srv *server) ConfigureRouter() {
 
 	// SportSchool
 	srv.GET("/sportSchool", handlers.GetSportSchools)
+	srv.GET("/sportSchoolByName", handlers.GetSportSchoolsByName)
 	srv.GET("/sportSchool/:id", handlers.GetSportSchool)
 	srv.POST("/sportSchool", handlers.CreateSportSchool)
 	srv.PUT("/sportSchool", handlers.UpdateSportSchool)
@@ -63,17 +64,25 @@ func (srv *server) ConfigureRouter() {
 
 	//TypeTournament
 	srv.GET("/typeTournament", handlers.GetTypeTournaments)
+	srv.GET("/typeTournamentByName", handlers.GetTypeTournamentsByName)
 	srv.GET("/typeTournament/:id", handlers.GetTypeTournament)
 	srv.POST("/typeTournament", handlers.CreateTypeTournament)
 	srv.PUT("/typeTournament", handlers.UpdateTypeTournament)
 	srv.DELETE("/typeTournament/:id", handlers.DeleteTypeTournament)
 
-	//TypeTournament
+	//CategoryValue
 	srv.GET("/categoryValue", handlers.GetCategoryValues)
 	srv.GET("/categoryValue/:id", handlers.GetCategoryValue)
 	srv.POST("/categoryValue", handlers.CreateCategoryValue)
 	srv.PUT("/categoryValue", handlers.UpdateCategoryValue)
 	srv.DELETE("/categoryValue/:id", handlers.DeleteCategoryValue)
+
+	//ScoreScale
+	srv.GET("/scoreScale", handlers.GetScoreScales)
+	srv.GET("/scoreScale/:id", handlers.GetScoreScale)
+	srv.POST("/scoreScale", handlers.CreateScoreScale)
+	srv.PUT("/scoreScale", handlers.UpdateScoreScale)
+	srv.DELETE("/scoreScale/:id", handlers.DeleteScoreScale)
 
 }
 
