@@ -52,7 +52,16 @@ func GetSportSchools(env env.Env, user *db.User, w http.ResponseWriter, r *http.
 		return write.Error(errors.RouteUnauthorized)
 	}
 
-	return write.JSONorErr(env.DB().GetSportSchools(r.Context()))
+	return write.JSONorErr(env.DB().GetSportSchools(r.Context(), "%%*%%"))
+}
+
+func GetSportSchoolsByName(env env.Env, user *db.User, w http.ResponseWriter, r *http.Request) http.HandlerFunc {
+	if user.Status != db.UserStatusActive {
+		return write.Error(errors.RouteUnauthorized)
+	}
+	search := getStringQuery("search", r)
+	search = "%%" + search + "%%"
+	return write.JSONorErr(env.DB().GetSportSchools(r.Context(), search))
 }
 
 func UpdateSportSchool(env env.Env, user *db.User, w http.ResponseWriter, r *http.Request) http.HandlerFunc {

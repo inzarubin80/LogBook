@@ -11,4 +11,4 @@ DELETE FROM sport_school WHERE id = $1;
 SELECT id, name, created_at, updated_at FROM sport_school WHERE  id = $1 LIMIT 1;
 
 -- name: GetSportSchools :many
-SELECT * FROM sport_school ORDER BY id DESC;
+SELECT * FROM sport_school Where name ILIKE  $1 OR $1 = '%%*%%' ORDER BY id DESC;

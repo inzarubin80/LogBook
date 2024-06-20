@@ -51,11 +51,11 @@ func (q *Queries) FindSportSchoolByIDs(ctx context.Context, id int64) (SportScho
 }
 
 const getSportSchools = `-- name: GetSportSchools :many
-SELECT id, name, created_at, updated_at FROM sport_school ORDER BY id DESC
+SELECT id, name, created_at, updated_at FROM sport_school Where name ILIKE  $1 OR $1 = '%%*%%' ORDER BY id DESC
 `
 
-func (q *Queries) GetSportSchools(ctx context.Context) ([]SportSchool, error) {
-	rows, err := q.db.Query(ctx, getSportSchools)
+func (q *Queries) GetSportSchools(ctx context.Context, name string) ([]SportSchool, error) {
+	rows, err := q.db.Query(ctx, getSportSchools, name)
 	if err != nil {
 		return nil, err
 	}

@@ -51,11 +51,11 @@ func (q *Queries) FindTypeTournamentByIDs(ctx context.Context, id int64) (TypeTo
 }
 
 const getTypeTournaments = `-- name: GetTypeTournaments :many
-SELECT id, name, created_at, updated_at FROM type_tournament ORDER BY id DESC
+SELECT id, name, created_at, updated_at FROM type_tournament Where name ILIKE  $1 OR $1 = '%%*%%' ORDER BY id DESC
 `
 
-func (q *Queries) GetTypeTournaments(ctx context.Context) ([]TypeTournament, error) {
-	rows, err := q.db.Query(ctx, getTypeTournaments)
+func (q *Queries) GetTypeTournaments(ctx context.Context, name string) ([]TypeTournament, error) {
+	rows, err := q.db.Query(ctx, getTypeTournaments, name)
 	if err != nil {
 		return nil, err
 	}
