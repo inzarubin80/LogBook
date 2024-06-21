@@ -225,7 +225,7 @@ const ScoreScaleList: React.FC = () => {
         type_tournament_id: updatedScoreScale._type_tournament_id,
         type_tournament_name: updatedScoreScale._type_tournament_name,
         changes: false,
-        
+
         _place_from: 0,
         _place_to: 0,
         _numbers_of_points: 0,
@@ -391,6 +391,10 @@ const ScoreScaleList: React.FC = () => {
                   <>
 
                     <AsyncSelect
+                      value={{
+                        value: item._sport_school_id,
+                        label: item._sport_school_name
+                      }}
                       loadOptions={loadOptionsSportSchool}
                       onChange={(selectOpt: any) => {
                         const updatedScoreScale = {
@@ -428,6 +432,10 @@ const ScoreScaleList: React.FC = () => {
                   <>
 
                     <AsyncSelect
+                      value={{
+                        value: item._type_tournament_id,
+                        label: item._type_tournament_name
+                      }}
                       loadOptions={loadOptionsTypeTournament}
                       onChange={(selectOpt: any) => {
                         const updatedScoreScale = {

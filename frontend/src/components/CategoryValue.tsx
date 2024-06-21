@@ -282,6 +282,10 @@ const CategoryValueList: React.FC = () => {
                   <>
                 
                   <AsyncSelect
+                    value={{
+                      value: item._category_id,
+                      label: item._category_name
+                    }}
                     loadOptions={loadOptions}
                     onChange={(selectOpt: any) => {
                       const updatedCategoryValue = {
