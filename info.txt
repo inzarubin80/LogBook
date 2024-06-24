@@ -20,3 +20,19 @@ docker-compose  up
 migrate -path="/docker-entrypoint-initdb.d/schema - db_data/" -database="postgres://postgres@/postgres?host=/var/run/postgresql/" up
 
 
+//Добавление пользователя
+
+//подключиться к базе
+psql -h postgres -U postgres -d postgres
+
+//добавить пользователя
+INSERT INTO users (email, Pass, Salt, status, Verification) VALUES ('super@sport.ru', '$2a$14$DAr396w3pUasFD.tP2UfFudIY1zOR7hW98DG2zKoXpnE158uLcKOC','lrvgLegXPsWMRYaqqLspveFMBhzbjXaS', 'active', 'TVuVZPMvAKkBONguZEaxNpXYjjAkhTqt');
+
+//Удаление пользователя
+//DELETE FROM users WHERE email = 'super@sport.ru';
+
+//Войти на странице
+{
+  "Email":"super@sport.ru,
+  "Pass":"qwlsmvnsoymdlgmgldkdmmgk"
+}
