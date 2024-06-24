@@ -5,6 +5,8 @@ import (
 	"math/rand"
 	"net/http"
 	"time"
+		"log"
+
 
 	"github.com/inzarubin80/Logbook/auth/db"
 	"github.com/inzarubin80/Logbook/auth/env"
@@ -75,6 +77,13 @@ func Signup(env env.Env, user *db.User, w http.ResponseWriter, r *http.Request) 
 		Status:       db.UserStatusUnverified,
 		Verification: generateRandomString(32),
 	})
+
+	log.Println("Email",  u.Email)
+	log.Println("Pass",   u.Pass)
+	log.Println("Salt",  u.Salt)
+	log.Println("Status", db.UserStatusUnverified)
+	log.Println("Verification", generateRandomString(32))
+	
 
 	if err != nil {
 		if isDupe(err) {
