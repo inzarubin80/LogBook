@@ -11,4 +11,4 @@ DELETE FROM coache WHERE id = $1;
 SELECT id, name, created_at, updated_at FROM coache WHERE  id = $1 LIMIT 1;
 
 -- name: GetCoaches :many
-SELECT * FROM coache ORDER BY id DESC;
+SELECT * FROM coache Where name ILIKE  $1 OR $1 = '%%*%%' ORDER BY id DESC;

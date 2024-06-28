@@ -24,6 +24,7 @@ import TypeTournaments from "./TypeTournaments";
 import Coaches from "./Coaches";
 import CategoryValue from "./CategoryValue";
 import ScoreScale from "./ScoreScale";
+import Sportsman from './Sportsman';
 
 
 import { Anon, LoggedIn } from "../Shared/Roles";
@@ -103,6 +104,11 @@ function ListRouter() {
        <ListItemLink
         to="/scoreScale"
         primary="Шкала оценок"
+        icon={<DraftsIcon />}
+      />
+       <ListItemLink
+        to="/sportsman"
+        primary="Спортсмены"
         icon={<DraftsIcon />}
       />
     </List>
@@ -210,6 +216,7 @@ export default function MyBar() {
           <Route path="/verify/:code" element={<Verify />} />
           <Route path="/сategoryValue" element={<CategoryValue />} />
           <Route path="/scoreScale" element={<ScoreScale/>} />
+          <Route path="/sportsman" element={<Sportsman/>} />
         </Routes>
       </Main>
     </Box>

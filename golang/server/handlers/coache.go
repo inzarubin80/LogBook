@@ -52,7 +52,16 @@ func GetCoaches(env env.Env, user *db.User, w http.ResponseWriter, r *http.Reque
 		return write.Error(errors.RouteUnauthorized)
 	}
 
-	return write.JSONorErr(env.DB().GetCoaches(r.Context()))
+	return write.JSONorErr(env.DB().GetCoaches(r.Context(), "%%*%%"))
+}
+
+func GetCoachesByName(env env.Env, user *db.User, w http.ResponseWriter, r *http.Request) http.HandlerFunc {
+	if user.Status != db.UserStatusActive {
+		return write.Error(errors.RouteUnauthorized)
+	}
+	search := getStringQuery("search", r)
+	search = "%%" + search + "%%"
+	return write.JSONorErr(env.DB().GetCoaches(r.Context(), search))
 }
 
 func UpdateCoache(env env.Env, user *db.User, w http.ResponseWriter, r *http.Request) http.HandlerFunc {
