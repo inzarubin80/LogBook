@@ -51,11 +51,11 @@ func (q *Queries) FindCoacheByIDs(ctx context.Context, id int64) (Coache, error)
 }
 
 const getCoaches = `-- name: GetCoaches :many
-SELECT id, name, created_at, updated_at FROM coache ORDER BY id DESC
+SELECT id, name, created_at, updated_at FROM coache Where name ILIKE  $1 OR $1 = '%%*%%' ORDER BY id DESC
 `
 
-func (q *Queries) GetCoaches(ctx context.Context) ([]Coache, error) {
-	rows, err := q.db.Query(ctx, getCoaches)
+func (q *Queries) GetCoaches(ctx context.Context, name string) ([]Coache, error) {
+	rows, err := q.db.Query(ctx, getCoaches, name)
 	if err != nil {
 		return nil, err
 	}

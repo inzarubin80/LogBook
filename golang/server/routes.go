@@ -57,6 +57,7 @@ func (srv *server) ConfigureRouter() {
 
 	// Coache
 	srv.GET("/coache", handlers.GetCoaches)
+	srv.GET("/coacheByName", handlers.GetCoachesByName)
 	srv.GET("/coache/:id", handlers.GetCoache)
 	srv.POST("/coache", handlers.CreateCoache)
 	srv.PUT("/coache", handlers.UpdateCoache)
@@ -83,6 +84,13 @@ func (srv *server) ConfigureRouter() {
 	srv.POST("/scoreScale", handlers.CreateScoreScale)
 	srv.PUT("/scoreScale", handlers.UpdateScoreScale)
 	srv.DELETE("/scoreScale/:id", handlers.DeleteScoreScale)
+
+	//Sportsman
+	srv.GET("/sportsman", handlers.GetSportsmans)
+	srv.GET("/sportsman/:id", handlers.GetSportsman)
+	srv.POST("/sportsman", handlers.CreateSportsman)
+	srv.PUT("/sportsman", handlers.UpdateSportsman)
+	srv.DELETE("/sportsman/:id", handlers.DeleteSportsman)
 
 }
 
