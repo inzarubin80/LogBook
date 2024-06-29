@@ -4,7 +4,7 @@ CREATE TABLE IF NOT EXISTS sportsman
     id bigserial PRIMARY KEY,
     name character varying(50) COLLATE pg_catalog."default" NOT NULL,
     gender character varying(255) COLLATE pg_catalog."default" NOT NULL DEFAULT 'MALE'::character varying,
-    date_birth date,
+    date_birth date NOT NULL,
     main_coache_id bigint NOT NULL,
     sport_school_id bigint NOT NULL,
     insuranse character varying(100) COLLATE pg_catalog."default" NOT NULL DEFAULT ''::character varying,

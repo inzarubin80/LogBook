@@ -1,5 +1,6 @@
 import { log } from "console";
 import http from "../http-common";
+import dayjs, { Dayjs } from 'dayjs';
 
 
 export interface ceateUpdateType {
@@ -7,7 +8,7 @@ export interface ceateUpdateType {
   id: number;
   name: string;
   gender: string;
-  date_birth: Date;
+  date_birth: Dayjs;
   main_coache_id: number;
   sport_school_id: number;
   insuranse: string;

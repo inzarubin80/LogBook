@@ -5,7 +5,6 @@
 package db
 
 import (
-	"database/sql"
 	"database/sql/driver"
 	"fmt"
 	"time"
@@ -101,15 +100,15 @@ type SportSchool struct {
 }
 
 type Sportsman struct {
-	ID            int64        `json:"id"`
-	Name          string       `json:"name"`
-	Gender        string       `json:"gender"`
-	DateBirth     sql.NullTime `json:"date_birth"`
-	MainCoacheID  int64        `json:"main_coache_id"`
-	SportSchoolID int64        `json:"sport_school_id"`
-	Insuranse     string       `json:"insuranse"`
-	CreatedAt     time.Time    `json:"created_at"`
-	UpdatedAt     time.Time    `json:"updated_at"`
+	ID            int64     `json:"id"`
+	Name          string    `json:"name"`
+	Gender        string    `json:"gender"`
+	DateBirth     time.Time `json:"date_birth"`
+	MainCoacheID  int64     `json:"main_coache_id"`
+	SportSchoolID int64     `json:"sport_school_id"`
+	Insuranse     string    `json:"insuranse"`
+	CreatedAt     time.Time `json:"created_at"`
+	UpdatedAt     time.Time `json:"updated_at"`
 }
 
 type TypeTournament struct {

@@ -16,7 +16,7 @@ sportsman.insuranse as insuranse,
 coache.id as main_coache_id, 
 coache.name as main_coache_name, 
 sport_school.id as sport_school_id, 
-sport_school.name as tsport_school_name
+sport_school.name as sport_school_name
 FROM sportsman as  sportsman 
     JOIN sport_school as sport_school 
     on sportsman.sport_school_id =  sport_school.id 
@@ -33,7 +33,7 @@ sportsman.insuranse as insuranse,
 coache.id as main_coache_id, 
 coache.name as main_coache_name, 
 sport_school.id as sport_school_id, 
-sport_school.name as tsport_school_name
+sport_school.name as sport_school_name
 FROM sportsman as  sportsman 
     JOIN sport_school as sport_school 
     on sportsman.sport_school_id =  sport_school.id 
