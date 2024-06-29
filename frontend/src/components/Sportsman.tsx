@@ -15,17 +15,23 @@ import AddIcon from "@mui/icons-material/AddCircle";
 import CancelIcon from "@mui/icons-material/Cancel";
 import Snackbar from "@mui/material/Snackbar";
 import Alert from "@mui/material/Alert";
-import { useTheme } from '@mui/material';
+import { useTheme } from "@mui/material";
+import { DemoContainer } from "@mui/x-date-pickers/internals/demo";
+import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
+import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
+import { DatePicker } from "@mui/x-date-pickers/DatePicker";
+import dayjs, { Dayjs } from "dayjs";
+import Select from 'react-select'
 
-import {
-  service, ceateUpdateType
-} from "../service/Sportsman";
+import { service, ceateUpdateType } from "../service/Sportsman";
+
+dayjs.locale("ru"); // Устанавливаем русскую локализацию
 
 interface valueTab {
   id: number;
   name: string;
   gender: string;
-  date_birth: Date;
+  date_birth: Dayjs;
   main_coache_id: number;
   main_coache_name: string;
   sport_school_id: number;
@@ -35,7 +41,7 @@ interface valueTab {
 
   _name: string;
   _gender: string;
-  _date_birth: Date;
+  _date_birth: Dayjs;
   _main_coache_id: number;
   _main_coache_name: string;
   _sport_school_id: number;
@@ -51,7 +57,8 @@ interface valueTab {
 }
 
 const loadOptionsSportSchool = (inputValue, callback) => {
-  service.getSportSchoolByName(inputValue)
+  service
+    .getSportSchoolByName(inputValue)
     .then((response) => {
       callback(
         response.data.map((item) => ({
@@ -66,7 +73,8 @@ const loadOptionsSportSchool = (inputValue, callback) => {
 };
 
 const loadOptionsMainCoache = (inputValue, callback) => {
-  service.getCoacheByName(inputValue)
+  service
+    .getCoacheByName(inputValue)
     .then((response) => {
       callback(
         response.data.map((item) => ({
@@ -88,7 +96,6 @@ const List: React.FC = () => {
   const errorColor = theme.palette.error.main;
   const errorFontSize = theme.typography.caption.fontSize;
 
-
   useEffect(() => {
     retrieve();
   }, []);
@@ -103,10 +110,20 @@ const List: React.FC = () => {
     setErrorApi(null);
   };
 
+  const handleChangeDateBirth = (newValue: Dayjs | null, item: valueTab) => {
+    const updatedTable: valueTab = {
+      ...item,
+      _date_birth: newValue ? newValue : dayjs(), // Provide a default value if newValue is null
+      errorDateBirth: "",
+    };
+    handleUpdate(item.id, updatedTable);
+  };
+
   const retrieve = () => {
     setErrorApi(null);
 
-    service.getAll()
+    service
+      .getAll()
       .then((response) => {
         setValues(response.data);
       })
@@ -122,7 +139,7 @@ const List: React.FC = () => {
         id: 0,
         name: "",
         gender: "",
-        date_birth: new Date(1, 1, 1, 0, 0, 0),
+        date_birth: dayjs(),
         main_coache_id: 0,
         main_coache_name: "",
         sport_school_id: 0,
@@ -132,7 +149,7 @@ const List: React.FC = () => {
 
         _name: "",
         _gender: "",
-        _date_birth: new Date(1, 1, 1, 0, 0, 0),
+        _date_birth: dayjs(),
         _main_coache_id: 0,
         _main_coache_name: "",
         _sport_school_id: 0,
@@ -168,62 +185,54 @@ const List: React.FC = () => {
       errorMainCoache: "",
       errorSportSchool: "",
       errorInsuranse: "",
-
     };
     setValues((prev) =>
-      prev.map((item) =>
-        item.id === value.id ? ChangesValue : item
-      )
+      prev.map((item) => (item.id === value.id ? ChangesValue : item))
     );
   };
 
-
   const validation = (updatedTable: valueTab) => {
-
     let isValid = true;
-
 
     const emptyValueError = "Не заполнено значение поля";
 
-
-    if (updatedTable._main_coache_id === 0 || updatedTable._sport_school_id === 0) {
-      isValid = false
+    if (
+      updatedTable._main_coache_id === 0 ||
+      updatedTable._sport_school_id === 0
+    ) {
+      isValid = false;
     }
 
     updatedTable = {
       ...updatedTable,
-      errorSportSchool: updatedTable._sport_school_id === 0 ? emptyValueError : "",
-      errorMainCoache: updatedTable._main_coache_id === 0 ? emptyValueError : ""
-    }
-
-    handleUpdate(updatedTable.id, updatedTable)
-
-    return isValid;
-
-  }
-
-  const handleSave = async (id: number, updatedTable: valueTab) => {
-
-    const inApiScoreScale: ceateUpdateType = {
-
-      id: updatedTable.id,
-      name: updatedTable.name,
-      gender: updatedTable.gender,
-      date_birth: updatedTable.date_birth,
-      main_coache_id: updatedTable.main_coache_id,
-      sport_school_id: updatedTable.sport_school_id,
-      insuranse: updatedTable.insuranse,
+      errorSportSchool:
+        updatedTable._sport_school_id === 0 ? emptyValueError : "",
+      errorMainCoache:
+        updatedTable._main_coache_id === 0 ? emptyValueError : "",
     };
 
+    handleUpdate(updatedTable.id, updatedTable);
+
+    return isValid;
+  };
+
+  const handleSave = async (id: number, updatedTable: valueTab) => {
+    const inApiScoreScale: ceateUpdateType = {
+      id: updatedTable.id,
+      name: updatedTable._name,
+      gender: updatedTable._gender,
+      date_birth: updatedTable._date_birth,
+      main_coache_id: updatedTable._main_coache_id,
+      sport_school_id: updatedTable._sport_school_id,
+      insuranse: updatedTable._insuranse,
+    };
 
     if (validation(updatedTable) !== true) {
       return;
     }
 
     try {
-      const response = await service.createUpdate(
-        inApiScoreScale
-      );
+      const response = await service.createUpdate(inApiScoreScale);
       const responseTable = response.data;
       const inStateTable: valueTab = {
         id: responseTable.id,
@@ -236,10 +245,9 @@ const List: React.FC = () => {
         sport_school_name: updatedTable._sport_school_name,
         insuranse: updatedTable._insuranse,
         changes: false,
-
         _name: "",
         _gender: "",
-        _date_birth: new Date(1, 1, 1, 0, 0, 0),
+        _date_birth: updatedTable._date_birth,
         _main_coache_id: 0,
         _main_coache_name: "",
         _sport_school_id: 0,
@@ -253,17 +261,13 @@ const List: React.FC = () => {
         errorSportSchool: "",
         errorInsuranse: "",
       };
-      setValues(
-        values.map((value) =>
-          value.id === id ? inStateTable : value
-        )
+      setValues((prev) =>
+        prev.map((value) => (value.id === id ? inStateTable : value))
       );
     } catch (error) {
-
       setErrorApi(
         error instanceof Error ? error.message : "Неизвестная ошибка"
       );
-
     }
   };
 
@@ -279,10 +283,7 @@ const List: React.FC = () => {
     }
   };
 
-  const handleUpdate = async (
-    id: number,
-    updatedTable: valueTab
-  ) => {
+  const handleUpdate = async (id: number, updatedTable: valueTab) => {
     const item = values.find((item) => item.id === id);
     const updateItem = { ...item, ...updatedTable };
     setValues((prev) =>
@@ -293,11 +294,10 @@ const List: React.FC = () => {
   const handleDelete = (id: number) => {
     setErrorApi(null);
 
-    service.remove(id)
+    service
+      .remove(id)
       .then((response) => {
-        setValues(
-          values.filter((values) => values.id !== id)
-        );
+        setValues(values.filter((values) => values.id !== id));
       })
       .catch((e) => {
         setErrorApi(e instanceof Error ? e.message : "Неизвестная ошибка");
@@ -344,7 +344,6 @@ const List: React.FC = () => {
 
                     error={!!item.errorName}
                     helperText={item.errorName}
-
                     onChange={(e) => {
                       const updatedTable: valueTab = {
                         ...item,
@@ -358,56 +357,80 @@ const List: React.FC = () => {
               </TableCell>
 
               <TableCell>
-                {item.changes && (
-                  <TextField
-                    value={item._gender}
-                    // fullWidth
+           
+              {item.changes && (
+                  <>
+                    <Select
+                      value={{
+                        value: item._gender,
+                        label: item._gender,
+                      }}
+                      
+                      
+                      options={[
+                        { value: 'MALE', label: 'MALE' },
+                        { value: 'FEMALE', label: 'FEMALE' },
 
-                    error={!!item.errorGender}
-                    helperText={item.errorGender}
+                      ]}
 
-                    onChange={(e) => {
-                      const updatedTable: valueTab = {
-                        ...item,
-                        ...{ _gender: e.target.value, errorGender: "" },
-                      };
-                      handleUpdate(item.id, updatedTable);
-                    }}
-                  />
+
+                      onChange={(selectOpt: any) => {
+                        const updatedTable = {
+                          ...item,
+                          ...{
+                            _gender: selectOpt.value,
+                            errorMainCoache: "",
+                          },
+                        };
+                        handleUpdate(item.id, updatedTable);
+                      }}
+                      styles={{
+                        control: (baseStyles, state) => ({
+                          ...baseStyles,
+                          borderColor:
+                            item.errorMainCoache !== "" ? errorColor : "",
+                          padding: 0,
+                        }),
+                      }}
+                    />
+
+                    {item.errorMainCoache && (
+                      <p style={{ color: errorColor, fontSize: errorFontSize }}>
+                        {item.errorMainCoache}
+                      </p>
+                    )}
+                  </>
                 )}
+
                 {!item.changes && <>{item.gender}</>}
               </TableCell>
 
               <TableCell>
                 {item.changes && (
-                  <TextField
-                    value={item._date_birth}
-                    // fullWidth
-
-                    error={!!item.errorDateBirth}
-                    helperText={item.errorDateBirth}
-
-                    onChange={(e) => {
-                      const updatedTable: valueTab = {
-                        ...item,
-                        ...{ _date_birth: new Date(e.target.value), errorDateBirth: "" },
-                      };
-                      handleUpdate(item.id, updatedTable);
-                    }}
-                  />
+                  <LocalizationProvider dateAdapter={AdapterDayjs}>
+                    <DemoContainer components={["DatePicker"]}>
+                      <DatePicker
+                        format="DD.MM.YYYY"
+                        defaultValue={dayjs(item._date_birth)}
+                        onChange={(newValue) => {
+                          handleChangeDateBirth(newValue, item);
+                        }}
+                      />
+                    </DemoContainer>
+                  </LocalizationProvider>
                 )}
-                {!item.changes && <>{item.date_birth}</>}
+                {!item.changes && (
+                  <>{dayjs(item.date_birth).format("DD.MM.YYYY")}</>
+                )}
               </TableCell>
 
               <TableCell>
                 {item.changes && (
-
                   <>
-
                     <AsyncSelect
                       value={{
                         value: item._main_coache_id,
-                        label: item._main_coache_name
+                        label: item._main_coache_name,
                       }}
                       loadOptions={loadOptionsMainCoache}
                       onChange={(selectOpt: any) => {
@@ -421,34 +444,33 @@ const List: React.FC = () => {
                         };
                         handleUpdate(item.id, updatedTable);
                       }}
-
                       styles={{
                         control: (baseStyles, state) => ({
                           ...baseStyles,
-                          borderColor: item.errorMainCoache !== "" ? errorColor : '',
-                          padding: 0
+                          borderColor:
+                            item.errorMainCoache !== "" ? errorColor : "",
+                          padding: 0,
                         }),
                       }}
-
                     />
 
-                    {item.errorMainCoache && <p style={{ color: errorColor, fontSize: errorFontSize }}>{item.errorMainCoache}</p>}
-
+                    {item.errorMainCoache && (
+                      <p style={{ color: errorColor, fontSize: errorFontSize }}>
+                        {item.errorMainCoache}
+                      </p>
+                    )}
                   </>
-
                 )}
                 {!item.changes && <>{item.main_coache_name}</>}
               </TableCell>
 
               <TableCell>
                 {item.changes && (
-
                   <>
-
                     <AsyncSelect
                       value={{
                         value: item._sport_school_id,
-                        label: item._sport_school_name
+                        label: item._sport_school_name,
                       }}
                       loadOptions={loadOptionsSportSchool}
                       onChange={(selectOpt: any) => {
@@ -462,21 +484,22 @@ const List: React.FC = () => {
                         };
                         handleUpdate(item.id, updatedTable);
                       }}
-
                       styles={{
                         control: (baseStyles, state) => ({
                           ...baseStyles,
-                          borderColor: item.errorSportSchool !== "" ? errorColor : '',
-                          padding: 0
+                          borderColor:
+                            item.errorSportSchool !== "" ? errorColor : "",
+                          padding: 0,
                         }),
                       }}
-
                     />
 
-                    {item.errorSportSchool && <p style={{ color: errorColor, fontSize: errorFontSize }}>{item.errorSportSchool}</p>}
-
+                    {item.errorSportSchool && (
+                      <p style={{ color: errorColor, fontSize: errorFontSize }}>
+                        {item.errorSportSchool}
+                      </p>
+                    )}
                   </>
-
                 )}
                 {!item.changes && <>{item.sport_school_name}</>}
               </TableCell>
@@ -485,15 +508,13 @@ const List: React.FC = () => {
                 {item.changes && (
                   <TextField
                     value={item._insuranse}
-                    fullWidth 
-
+                    fullWidth
                     error={!!item.errorInsuranse}
                     helperText={item.errorInsuranse}
-
                     onChange={(e) => {
                       const updatedTable: valueTab = {
                         ...item,
-                        ...{ _insuranse: e.target.value, errorInsuranse:"" },
+                        ...{ _insuranse: e.target.value, errorInsuranse: "" },
                       };
                       handleUpdate(item.id, updatedTable);
                     }}
@@ -521,14 +542,15 @@ const List: React.FC = () => {
                   </IconButton>
                 )}
 
-                {!item.changes && <IconButton
-                  onClick={() => handleDelete(item.id)}
-                  aria-label="delete"
-                  color="warning"
-                >
-                  <DeleteIcon />
-                </IconButton>
-                }
+                {!item.changes && (
+                  <IconButton
+                    onClick={() => handleDelete(item.id)}
+                    aria-label="delete"
+                    color="warning"
+                  >
+                    <DeleteIcon />
+                  </IconButton>
+                )}
                 {item.changes && (
                   <IconButton onClick={() => handleCancel(item.id)}>
                     <CancelIcon />

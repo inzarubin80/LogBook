@@ -19,6 +19,10 @@ docker-compose  up
 //создать таблицы в базе
 migrate -path="/docker-entrypoint-initdb.d/schema - db_data/" -database="postgres://postgres@/postgres?host=/var/run/postgresql/" up
 
+//
+migrate -path="/docker-entrypoint-initdb.d/schema - db_data/" -database="postgres://postgres@/postgres?host=/var/run/postgresql/" down 
+
+
 
 //Добавление пользователя
 
