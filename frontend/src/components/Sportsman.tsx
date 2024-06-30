@@ -363,17 +363,13 @@ const List: React.FC = () => {
                     <Select
                       value={{
                         value: item._gender,
-                        label: item._gender,
+                        label: item._gender==='FEMALE'?'Ж':'М',
                       }}
-                      
-                      
                       options={[
-                        { value: 'MALE', label: 'MALE' },
-                        { value: 'FEMALE', label: 'FEMALE' },
+                        { value: 'MALE', label: 'М' },
+                        { value: 'FEMALE', label: 'Ж' },
 
                       ]}
-
-
                       onChange={(selectOpt: any) => {
                         const updatedTable = {
                           ...item,
@@ -402,7 +398,7 @@ const List: React.FC = () => {
                   </>
                 )}
 
-                {!item.changes && <>{item.gender}</>}
+                {!item.changes && <>{item.gender==='FEMALE'?'Ж':'М'}</>}
               </TableCell>
 
               <TableCell>
