@@ -46,7 +46,7 @@ services:
       - logbook-docker-network  
     volumes:
       - ./golang/sql/schema:/docker-entrypoint-initdb.d/schema
-       - db_data:/var/lib/postgresql/data
+      - db_data:/var/lib/postgresql/data
 
   golang:
     container_name: logbook-docker-golang
@@ -69,3 +69,9 @@ networks:
 volumes:
     postgres:
     db_data:
+        name: db_data
+        driver: local
+        driver_opts:
+            o: bind
+            type: none
+            device: "./postgres/data"
