@@ -363,6 +363,7 @@ const List: React.FC = () => {
                   />
                 )}
                 {!item.changes && <>{item.begin_date_tournament}</>}
+                
               </TableCell> */}
 
               <TableCell>
@@ -385,6 +386,7 @@ const List: React.FC = () => {
               </TableCell>
 
               {/* <TableCell>
+              
                 {item.changes && (
                   <TextField
                     value={item._end_date_tournament}
@@ -403,6 +405,7 @@ const List: React.FC = () => {
                   />
                 )}
                 {!item.changes && <>{item.end_date_tournament}</>}
+
               </TableCell> */}
 
               <TableCell>
@@ -422,6 +425,7 @@ const List: React.FC = () => {
                 {!item.changes && (
                   <>{dayjs(item.end_date_tournament).format("DD.MM.YYYY")}</>
                 )}
+
               </TableCell>
 
               <TableCell>
