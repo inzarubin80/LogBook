@@ -271,7 +271,7 @@ const List: React.FC = () => {
   return (
     <div>
       <Typography variant="h4" component="h1" gutterBottom>
-        Турнир
+        Турниры
       </Typography>
       <div>
         <IconButton
