@@ -20,6 +20,10 @@ docker-compose  up
 //migrate -path="/docker-entrypoint-initdb.d/schema - db_data/" -database="postgres://postgres@/postgres?host=/var/run/postgresql/" up
 migrate -path="/docker-entrypoint-initdb.d/schema/" -database="postgres://postgres@/postgres?host=/var/run/postgresql/" up
 
+//
+migrate -path="/docker-entrypoint-initdb.d/schema - db_data/" -database="postgres://postgres@/postgres?host=/var/run/postgresql/" down 
+
+
 
 //Добавление пользователя
 

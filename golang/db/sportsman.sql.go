@@ -7,7 +7,7 @@ package db
 
 import (
 	"context"
-	"database/sql"
+	"time"
 )
 
 const createSportsman = `-- name: CreateSportsman :one
@@ -15,12 +15,12 @@ INSERT INTO sportsman (name, gender, date_birth, main_coache_id, sport_school_id
 `
 
 type CreateSportsmanParams struct {
-	Name          string       `json:"name"`
-	Gender        string       `json:"gender"`
-	DateBirth     sql.NullTime `json:"date_birth"`
-	MainCoacheID  int64        `json:"main_coache_id"`
-	SportSchoolID int64        `json:"sport_school_id"`
-	Insuranse     string       `json:"insuranse"`
+	Name          string    `json:"name"`
+	Gender        string    `json:"gender"`
+	DateBirth     time.Time `json:"date_birth"`
+	MainCoacheID  int64     `json:"main_coache_id"`
+	SportSchoolID int64     `json:"sport_school_id"`
+	Insuranse     string    `json:"insuranse"`
 }
 
 func (q *Queries) CreateSportsman(ctx context.Context, arg CreateSportsmanParams) (Sportsman, error) {
@@ -65,7 +65,7 @@ sportsman.insuranse as insuranse,
 coache.id as main_coache_id, 
 coache.name as main_coache_name, 
 sport_school.id as sport_school_id, 
-sport_school.name as tsport_school_name
+sport_school.name as sport_school_name
 FROM sportsman as  sportsman 
     JOIN sport_school as sport_school 
     on sportsman.sport_school_id =  sport_school.id 
@@ -75,15 +75,15 @@ WHERE  sportsman.id = $1 LIMIT 1
 `
 
 type FindSportsmanByIDsRow struct {
-	ID               int64        `json:"id"`
-	Name             string       `json:"name"`
-	Gender           string       `json:"gender"`
-	DateBirth        sql.NullTime `json:"date_birth"`
-	Insuranse        string       `json:"insuranse"`
-	MainCoacheID     int64        `json:"main_coache_id"`
-	MainCoacheName   string       `json:"main_coache_name"`
-	SportSchoolID    int64        `json:"sport_school_id"`
-	TsportSchoolName string       `json:"tsport_school_name"`
+	ID              int64     `json:"id"`
+	Name            string    `json:"name"`
+	Gender          string    `json:"gender"`
+	DateBirth       time.Time `json:"date_birth"`
+	Insuranse       string    `json:"insuranse"`
+	MainCoacheID    int64     `json:"main_coache_id"`
+	MainCoacheName  string    `json:"main_coache_name"`
+	SportSchoolID   int64     `json:"sport_school_id"`
+	SportSchoolName string    `json:"sport_school_name"`
 }
 
 func (q *Queries) FindSportsmanByIDs(ctx context.Context, id int64) (FindSportsmanByIDsRow, error) {
@@ -98,7 +98,7 @@ func (q *Queries) FindSportsmanByIDs(ctx context.Context, id int64) (FindSportsm
 		&i.MainCoacheID,
 		&i.MainCoacheName,
 		&i.SportSchoolID,
-		&i.TsportSchoolName,
+		&i.SportSchoolName,
 	)
 	return i, err
 }
@@ -112,7 +112,7 @@ sportsman.insuranse as insuranse,
 coache.id as main_coache_id, 
 coache.name as main_coache_name, 
 sport_school.id as sport_school_id, 
-sport_school.name as tsport_school_name
+sport_school.name as sport_school_name
 FROM sportsman as  sportsman 
     JOIN sport_school as sport_school 
     on sportsman.sport_school_id =  sport_school.id 
@@ -122,15 +122,15 @@ ORDER BY sportsman.name DESC
 `
 
 type GetSportsmansRow struct {
-	ID               int64        `json:"id"`
-	Name             string       `json:"name"`
-	Gender           string       `json:"gender"`
-	DateBirth        sql.NullTime `json:"date_birth"`
-	Insuranse        string       `json:"insuranse"`
-	MainCoacheID     int64        `json:"main_coache_id"`
-	MainCoacheName   string       `json:"main_coache_name"`
-	SportSchoolID    int64        `json:"sport_school_id"`
-	TsportSchoolName string       `json:"tsport_school_name"`
+	ID              int64     `json:"id"`
+	Name            string    `json:"name"`
+	Gender          string    `json:"gender"`
+	DateBirth       time.Time `json:"date_birth"`
+	Insuranse       string    `json:"insuranse"`
+	MainCoacheID    int64     `json:"main_coache_id"`
+	MainCoacheName  string    `json:"main_coache_name"`
+	SportSchoolID   int64     `json:"sport_school_id"`
+	SportSchoolName string    `json:"sport_school_name"`
 }
 
 func (q *Queries) GetSportsmans(ctx context.Context) ([]GetSportsmansRow, error) {
@@ -151,7 +151,7 @@ func (q *Queries) GetSportsmans(ctx context.Context) ([]GetSportsmansRow, error)
 			&i.MainCoacheID,
 			&i.MainCoacheName,
 			&i.SportSchoolID,
-			&i.TsportSchoolName,
+			&i.SportSchoolName,
 		); err != nil {
 			return nil, err
 		}
@@ -168,13 +168,13 @@ UPDATE sportsman SET name = $2, gender = $3, date_birth = $4, main_coache_id = $
 `
 
 type UpdateSportsmanParams struct {
-	ID            int64        `json:"id"`
-	Name          string       `json:"name"`
-	Gender        string       `json:"gender"`
-	DateBirth     sql.NullTime `json:"date_birth"`
-	MainCoacheID  int64        `json:"main_coache_id"`
-	SportSchoolID int64        `json:"sport_school_id"`
-	Insuranse     string       `json:"insuranse"`
+	ID            int64     `json:"id"`
+	Name          string    `json:"name"`
+	Gender        string    `json:"gender"`
+	DateBirth     time.Time `json:"date_birth"`
+	MainCoacheID  int64     `json:"main_coache_id"`
+	SportSchoolID int64     `json:"sport_school_id"`
+	Insuranse     string    `json:"insuranse"`
 }
 
 func (q *Queries) UpdateSportsman(ctx context.Context, arg UpdateSportsmanParams) (Sportsman, error) {
