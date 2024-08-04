@@ -7,7 +7,7 @@ package db
 
 import (
 	"context"
-	"database/sql"
+	"time"
 )
 
 const createTournament = `-- name: CreateTournament :one
@@ -15,11 +15,11 @@ INSERT INTO tournament (name, begin_date_tournament, end_date_tournament, type_o
 `
 
 type CreateTournamentParams struct {
-	Name                string       `json:"name"`
-	BeginDateTournament sql.NullTime `json:"begin_date_tournament"`
-	EndDateTournament   sql.NullTime `json:"end_date_tournament"`
-	TypeOfTornamentID   int64        `json:"type_of_tornament_id"`
-	Venue               string       `json:"venue"`
+	Name                string    `json:"name"`
+	BeginDateTournament time.Time `json:"begin_date_tournament"`
+	EndDateTournament   time.Time `json:"end_date_tournament"`
+	TypeOfTornamentID   int64     `json:"type_of_tornament_id"`
+	Venue               string    `json:"venue"`
 }
 
 func (q *Queries) CreateTournament(ctx context.Context, arg CreateTournamentParams) (Tournament, error) {
@@ -68,13 +68,13 @@ WHERE  tournament.id = $1 LIMIT 1
 `
 
 type FindTournamentByIDsRow struct {
-	ID                  int64        `json:"id"`
-	Name                string       `json:"name"`
-	BeginDateTournament sql.NullTime `json:"begin_date_tournament"`
-	EndDateTournament   sql.NullTime `json:"end_date_tournament"`
-	Venue               string       `json:"venue"`
-	TypeOfTornamentID   int64        `json:"type_of_tornament_id"`
-	TypeOfTornamentName string       `json:"type_of_tornament_name"`
+	ID                  int64     `json:"id"`
+	Name                string    `json:"name"`
+	BeginDateTournament time.Time `json:"begin_date_tournament"`
+	EndDateTournament   time.Time `json:"end_date_tournament"`
+	Venue               string    `json:"venue"`
+	TypeOfTornamentID   int64     `json:"type_of_tornament_id"`
+	TypeOfTornamentName string    `json:"type_of_tornament_name"`
 }
 
 func (q *Queries) FindTournamentByIDs(ctx context.Context, id int64) (FindTournamentByIDsRow, error) {
@@ -107,13 +107,13 @@ ORDER BY tournament.name DESC
 `
 
 type GetTournamentsRow struct {
-	ID                  int64        `json:"id"`
-	Name                string       `json:"name"`
-	BeginDateTournament sql.NullTime `json:"begin_date_tournament"`
-	EndDateTournament   sql.NullTime `json:"end_date_tournament"`
-	Venue               string       `json:"venue"`
-	TypeOfTornamentID   int64        `json:"type_of_tornament_id"`
-	TypeOfTornamentName string       `json:"type_of_tornament_name"`
+	ID                  int64     `json:"id"`
+	Name                string    `json:"name"`
+	BeginDateTournament time.Time `json:"begin_date_tournament"`
+	EndDateTournament   time.Time `json:"end_date_tournament"`
+	Venue               string    `json:"venue"`
+	TypeOfTornamentID   int64     `json:"type_of_tornament_id"`
+	TypeOfTornamentName string    `json:"type_of_tornament_name"`
 }
 
 func (q *Queries) GetTournaments(ctx context.Context) ([]GetTournamentsRow, error) {
@@ -149,12 +149,12 @@ UPDATE tournament SET name = $2, begin_date_tournament = $3, end_date_tournament
 `
 
 type UpdateTournamentParams struct {
-	ID                  int64        `json:"id"`
-	Name                string       `json:"name"`
-	BeginDateTournament sql.NullTime `json:"begin_date_tournament"`
-	EndDateTournament   sql.NullTime `json:"end_date_tournament"`
-	TypeOfTornamentID   int64        `json:"type_of_tornament_id"`
-	Venue               string       `json:"venue"`
+	ID                  int64     `json:"id"`
+	Name                string    `json:"name"`
+	BeginDateTournament time.Time `json:"begin_date_tournament"`
+	EndDateTournament   time.Time `json:"end_date_tournament"`
+	TypeOfTornamentID   int64     `json:"type_of_tornament_id"`
+	Venue               string    `json:"venue"`
 }
 
 func (q *Queries) UpdateTournament(ctx context.Context, arg UpdateTournamentParams) (Tournament, error) {
