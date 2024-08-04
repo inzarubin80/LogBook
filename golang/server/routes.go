@@ -92,6 +92,13 @@ func (srv *server) ConfigureRouter() {
 	srv.PUT("/sportsman", handlers.UpdateSportsman)
 	srv.DELETE("/sportsman/:id", handlers.DeleteSportsman)
 
+	//Tournament
+	srv.GET("/tournament", handlers.GetTournaments)
+	srv.GET("/tournament/:id", handlers.GetTournament)
+	srv.POST("/tournament", handlers.CreateTournament)
+	srv.PUT("/tournament", handlers.UpdateTournament)
+	srv.DELETE("/tournament/:id", handlers.DeleteTournament)
+
 }
 
 // srvHandler is the extended handler function that our API routes use
