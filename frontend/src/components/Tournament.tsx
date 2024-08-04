@@ -16,6 +16,11 @@ import CancelIcon from "@mui/icons-material/Cancel";
 import Snackbar from "@mui/material/Snackbar";
 import Alert from "@mui/material/Alert";
 import { useTheme } from '@mui/material';
+import { DemoContainer } from "@mui/x-date-pickers/internals/demo";
+import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
+import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
+import { DatePicker } from "@mui/x-date-pickers/DatePicker";
+import dayjs, { Dayjs } from "dayjs";
 
 import {
   service, createUpdateType
@@ -24,16 +29,16 @@ import {
 interface valueTab {
   id: number;
   name: string;
-  begin_date_tournament: Date;
-  end_date_tournament: Date;
+  begin_date_tournament: Dayjs;
+  end_date_tournament: Dayjs;
   type_of_tornament_id: number;
   type_of_tornament_name: string;
   venue: string;
   changes: boolean;
 
   _name: string;
-  _begin_date_tournament: Date;
-  _end_date_tournament: Date;
+  _begin_date_tournament: Dayjs;
+  _end_date_tournament: Dayjs;
   _type_of_tornament_id: number;
   _type_of_tornament_name: string;
   _venue: string;
@@ -83,6 +88,24 @@ const List: React.FC = () => {
     setErrorApi(null);
   };
 
+  const handleChangeBeginDateTournament = (newValue: Dayjs | null, item: valueTab) => {
+    const updatedTable: valueTab = {
+      ...item,
+      _begin_date_tournament: newValue ? newValue : dayjs(), // Provide a default value if newValue is null
+      errorBeginDateTournament: "",
+    };
+    handleUpdate(item.id, updatedTable);
+  };
+
+  const handleChangeEndDateTournament = (newValue: Dayjs | null, item: valueTab) => {
+    const updatedTable: valueTab = {
+      ...item,
+      _end_date_tournament: newValue ? newValue : dayjs(), // Provide a default value if newValue is null
+      errorEndDateTournament: "",
+    };
+    handleUpdate(item.id, updatedTable);
+  };
+
   const retrieve = () => {
     setErrorApi(null);
 
@@ -101,16 +124,16 @@ const List: React.FC = () => {
       {
         id: 0,
         name: "",
-        begin_date_tournament: new Date(1, 1, 1, 0, 0, 0),
-        end_date_tournament: new Date(1, 1, 1, 0, 0, 0),
+        begin_date_tournament: dayjs(),
+        end_date_tournament: dayjs(),
         type_of_tornament_id: 0,
         type_of_tornament_name: "",
         venue: "",
         changes: true,
 
         _name: "",
-        _begin_date_tournament: new Date(1, 1, 1, 0, 0, 0),
-        _end_date_tournament: new Date(1, 1, 1, 0, 0, 0),
+        _begin_date_tournament: dayjs(),
+        _end_date_tournament: dayjs(),
         _type_of_tornament_id: 0,
         _type_of_tornament_name: "",
         _venue: "",
@@ -178,11 +201,11 @@ const List: React.FC = () => {
     const inApiScoreScale: createUpdateType = {
 
       id: updatedTable.id,
-      name: updatedTable.name,
-      begin_date_tournament: updatedTable.begin_date_tournament,
-      end_date_tournament: updatedTable.end_date_tournament,
-      type_of_tornament_id: updatedTable.type_of_tornament_id,
-      venue: updatedTable.venue,
+      name: updatedTable._name,
+      begin_date_tournament: updatedTable._begin_date_tournament,
+      end_date_tournament: updatedTable._end_date_tournament,
+      type_of_tornament_id: updatedTable._type_of_tornament_id,
+      venue: updatedTable._venue,
     };
 
 
@@ -206,8 +229,8 @@ const List: React.FC = () => {
         changes: false,
 
         _name: "",
-        _begin_date_tournament: new Date(1, 1, 1, 0, 0, 0),
-        _end_date_tournament: new Date(1, 1, 1, 0, 0, 0),
+        _begin_date_tournament: updatedTable._begin_date_tournament,
+        _end_date_tournament: updatedTable._end_date_tournament,
         _type_of_tornament_id: 0,
         _type_of_tornament_name: "",
         _venue: "",
@@ -321,7 +344,7 @@ const List: React.FC = () => {
                 {!item.changes && <>{item.name}</>}
               </TableCell>
 
-              <TableCell>
+              {/* <TableCell>
                 {item.changes && (
                   <TextField
                     value={item._begin_date_tournament}
@@ -340,9 +363,28 @@ const List: React.FC = () => {
                   />
                 )}
                 {!item.changes && <>{item.begin_date_tournament}</>}
-              </TableCell>
+              </TableCell> */}
 
               <TableCell>
+                {item.changes && (
+                  <LocalizationProvider dateAdapter={AdapterDayjs}>
+                    <DemoContainer components={["DatePicker"]}>
+                      <DatePicker
+                        format="DD.MM.YYYY"
+                        defaultValue={dayjs(item._begin_date_tournament)}
+                        onChange={(newValue) => {
+                          handleChangeBeginDateTournament(newValue, item);
+                        }}
+                      />
+                    </DemoContainer>
+                  </LocalizationProvider>
+                )}
+                {!item.changes && (
+                  <>{dayjs(item.begin_date_tournament).format("DD.MM.YYYY")}</>
+                )}
+              </TableCell>
+
+              {/* <TableCell>
                 {item.changes && (
                   <TextField
                     value={item._end_date_tournament}
@@ -361,6 +403,25 @@ const List: React.FC = () => {
                   />
                 )}
                 {!item.changes && <>{item.end_date_tournament}</>}
+              </TableCell> */}
+
+              <TableCell>
+                {item.changes && (
+                  <LocalizationProvider dateAdapter={AdapterDayjs}>
+                    <DemoContainer components={["DatePicker"]}>
+                      <DatePicker
+                        format="DD.MM.YYYY"
+                        defaultValue={dayjs(item._end_date_tournament)}
+                        onChange={(newValue) => {
+                          handleChangeEndDateTournament(newValue, item);
+                        }}
+                      />
+                    </DemoContainer>
+                  </LocalizationProvider>
+                )}
+                {!item.changes && (
+                  <>{dayjs(item.end_date_tournament).format("DD.MM.YYYY")}</>
+                )}
               </TableCell>
 
               <TableCell>

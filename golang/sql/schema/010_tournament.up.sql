@@ -3,8 +3,8 @@ CREATE TABLE IF NOT EXISTS tournament
 (
     id bigserial PRIMARY KEY,
     name character varying(50) COLLATE pg_catalog."default" NOT NULL,
-    begin_date_tournament date,
-    end_date_tournament date,
+    begin_date_tournament date NOT NULL,
+    end_date_tournament date NOT NULL,
     type_of_tornament_id bigint NOT NULL,
     venue character varying(100) COLLATE pg_catalog."default" NOT NULL DEFAULT ''::character varying,
     created_at timestamp NOT NULL DEFAULT now(),

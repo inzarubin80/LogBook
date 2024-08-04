@@ -1,13 +1,14 @@
 import { log } from "console";
 import http from "../http-common";
+import dayjs, { Dayjs } from 'dayjs';
 
 
 export interface createUpdateType {
  
   id: number;
   name: string;
-  begin_date_tournament: Date;
-  end_date_tournament: Date;
+  begin_date_tournament: Dayjs;
+  end_date_tournament: Dayjs;
   type_of_tornament_id: number;
   venue: string;
 }
