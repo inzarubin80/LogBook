@@ -17,7 +17,7 @@ docker-compose  up
 прод должен запускаться на 80 порту
 
 //создать таблицы в базе
-migrate -path="/docker-entrypoint-initdb.d/schema - db_data/" -database="postgres://postgres@/postgres?host=/var/run/postgresql/" up
+//migrate -path="/docker-entrypoint-initdb.d/schema - db_data/" -database="postgres://postgres@/postgres?host=/var/run/postgresql/" up
 migrate -path="/docker-entrypoint-initdb.d/schema/" -database="postgres://postgres@/postgres?host=/var/run/postgresql/" up
 
 

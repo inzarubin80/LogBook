@@ -16,6 +16,7 @@ type Querier interface {
 	CreateScoreScale(ctx context.Context, arg CreateScoreScaleParams) (ScoreScale, error)
 	CreateSportSchool(ctx context.Context, name string) (SportSchool, error)
 	CreateSportsman(ctx context.Context, arg CreateSportsmanParams) (Sportsman, error)
+	CreateTournament(ctx context.Context, arg CreateTournamentParams) (Tournament, error)
 	CreateTypeTournament(ctx context.Context, name string) (TypeTournament, error)
 	CreateUser(ctx context.Context, arg CreateUserParams) (User, error)
 	DeleteCategoryByIDs(ctx context.Context, id int64) error
@@ -25,6 +26,7 @@ type Querier interface {
 	DeleteScoreScaleByIDs(ctx context.Context, id int64) error
 	DeleteSportSchoolByIDs(ctx context.Context, id int64) error
 	DeleteSportsmanByIDs(ctx context.Context, id int64) error
+	DeleteTournamentByIDs(ctx context.Context, id int64) error
 	DeleteTypeTournamentByIDs(ctx context.Context, id int64) error
 	FindCategoryByIDs(ctx context.Context, id int64) (Category, error)
 	FindCategoryValueByIDs(ctx context.Context, id int64) (FindCategoryValueByIDsRow, error)
@@ -33,6 +35,7 @@ type Querier interface {
 	FindScoreScaleByIDs(ctx context.Context, id int64) (FindScoreScaleByIDsRow, error)
 	FindSportSchoolByIDs(ctx context.Context, id int64) (SportSchool, error)
 	FindSportsmanByIDs(ctx context.Context, id int64) (FindSportsmanByIDsRow, error)
+	FindTournamentByIDs(ctx context.Context, id int64) (FindTournamentByIDsRow, error)
 	FindTypeTournamentByIDs(ctx context.Context, id int64) (TypeTournament, error)
 	FindUserByEmail(ctx context.Context, lower string) (User, error)
 	FindUserByID(ctx context.Context, id int64) (User, error)
@@ -43,6 +46,7 @@ type Querier interface {
 	GetScoreScales(ctx context.Context) ([]GetScoreScalesRow, error)
 	GetSportSchools(ctx context.Context, name string) ([]SportSchool, error)
 	GetSportsmans(ctx context.Context) ([]GetSportsmansRow, error)
+	GetTournaments(ctx context.Context) ([]GetTournamentsRow, error)
 	GetTypeTournaments(ctx context.Context, name string) ([]TypeTournament, error)
 	UpdateCategory(ctx context.Context, arg UpdateCategoryParams) (Category, error)
 	UpdateCategoryValue(ctx context.Context, arg UpdateCategoryValueParams) (CategoryValue, error)
@@ -50,6 +54,7 @@ type Querier interface {
 	UpdateScoreScale(ctx context.Context, arg UpdateScoreScaleParams) (ScoreScale, error)
 	UpdateSportSchool(ctx context.Context, arg UpdateSportSchoolParams) (SportSchool, error)
 	UpdateSportsman(ctx context.Context, arg UpdateSportsmanParams) (Sportsman, error)
+	UpdateTournament(ctx context.Context, arg UpdateTournamentParams) (Tournament, error)
 	UpdateTypeTournament(ctx context.Context, arg UpdateTypeTournamentParams) (TypeTournament, error)
 	UpdateUserPassword(ctx context.Context, arg UpdateUserPasswordParams) error
 	UpdateUserStatus(ctx context.Context, arg UpdateUserStatusParams) error

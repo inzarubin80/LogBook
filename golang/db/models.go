@@ -112,6 +112,17 @@ type Sportsman struct {
 	UpdatedAt     time.Time    `json:"updated_at"`
 }
 
+type Tournament struct {
+	ID                  int64        `json:"id"`
+	Name                string       `json:"name"`
+	BeginDateTournament sql.NullTime `json:"begin_date_tournament"`
+	EndDateTournament   sql.NullTime `json:"end_date_tournament"`
+	TypeOfTornamentID   int64        `json:"type_of_tornament_id"`
+	Venue               string       `json:"venue"`
+	CreatedAt           time.Time    `json:"created_at"`
+	UpdatedAt           time.Time    `json:"updated_at"`
+}
+
 type TypeTournament struct {
 	ID        int64     `json:"id"`
 	Name      string    `json:"name"`
